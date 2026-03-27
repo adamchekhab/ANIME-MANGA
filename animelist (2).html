@@ -13,7 +13,7 @@
 <style>
   :root {
     --bg: #050508;
-    --surface: rgba(14, 14, 20, 0.85);
+    --surface: #0e0e14;
     --surface2: #161620;
     --border: rgba(255,255,255,0.06);
     --accent: #e8c97e;
@@ -27,6 +27,7 @@
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   
+  /* REMISE DU FOND NOIR SOBRE ET ÉPURÉ */
   body { 
     background: var(--bg); 
     color: var(--text); 
@@ -35,19 +36,12 @@
     min-height: 100vh; 
     -webkit-font-smoothing: antialiased; 
     overflow-x: hidden;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    background-size: 150px;
-    background-attachment: fixed;
   }
   
   body::before {
     content: ''; position: fixed; inset: 0;
-    background-image: 
-      radial-gradient(circle at 50% 50%, rgba(232,201,126,0.03) 0%, transparent 80%),
-      linear-gradient(var(--border) 1px, transparent 1px),
-      linear-gradient(90deg, var(--border) 1px, transparent 1px);
-    background-size: 100% 100%, 60px 60px, 60px 60px;
-    pointer-events: none; z-index: 0; opacity: 0.6;
+    background: radial-gradient(ellipse 60% 40% at 80% 20%, rgba(232,201,126,0.05) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
   }
 
   .container { max-width: 1400px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
@@ -75,7 +69,7 @@
 
   .topbar { display: flex; gap: 12px; align-items: center; margin-bottom: 30px; flex-wrap: wrap; }
   .search-wrap { flex: 2; position: relative; min-width: 200px; }
-  .search-wrap input { width: 100%; background: rgba(14, 14, 20, 0.6); border: 1px solid var(--border); color: var(--text); padding: 14px 16px 14px 46px; font-size: 0.9rem; border-radius: 12px; outline: none; backdrop-filter: blur(4px); }
+  .search-wrap input { width: 100%; background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 14px 16px 14px 46px; font-size: 0.9rem; border-radius: 12px; outline: none; }
   .search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--muted); }
 
   select { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 12px; border-radius: 12px; outline: none; cursor: pointer; font-family: inherit; font-size: 0.85rem; }
@@ -84,6 +78,7 @@
 
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 25px; padding-bottom: 60px; }
   
+  /* CARDS OPACQUES */
   .card { 
     background: var(--surface); 
     border: 1px solid var(--border); 
@@ -91,7 +86,6 @@
     overflow: hidden; 
     position: relative; 
     transition: 0.4s cubic-bezier(0.2, 1, 0.2, 1);
-    backdrop-filter: blur(10px);
   }
   .card:hover { transform: translateY(-10px); border-color: rgba(232,201,126,0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.8); }
   
@@ -100,7 +94,7 @@
   .rank-3 { border: 2px solid var(--bronze); }
 
   .medal-badge { position: absolute; top: 12px; left: 12px; z-index: 5; font-size: 1.6rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.8)); }
-  .collection-badge { position: absolute; bottom: 80px; right: 12px; z-index: 5; background: rgba(232,201,126,0.9); color: #000; padding: 3px 8px; border-radius: 4px; font-size: 0.55rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+  .anthology-badge { position: absolute; top: 12px; right: 12px; z-index: 5; background: var(--accent); color: #000; padding: 3px 8px; border-radius: 4px; font-size: 0.55rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
 
   .card-img { width: 100%; aspect-ratio: 2/3; position: relative; background: var(--surface2); overflow: hidden; }
   .card-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s; }
@@ -108,7 +102,7 @@
   .card-overlay { position: absolute; inset: 0; background: rgba(5,5,8,0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; opacity: 0; transition: 0.3s; backdrop-filter: blur(6px); z-index: 7; }
   .card:hover .card-overlay { opacity: 1; }
   
-  .ov-btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+  .ov-btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 1rem; }
   .ov-btn:hover { background: var(--accent); color: var(--bg); transform: scale(1.1); }
   .ov-btn.active-gold { background: var(--gold); color: black; border-color: var(--gold); }
   .ov-btn.active-silver { background: var(--silver); color: black; border-color: var(--silver); }
@@ -251,7 +245,7 @@ function render() {
     card.className = `card ${item.rank ? 'rank-'+item.rank : ''}`;
     
     // Détection Anthologie (si le titre contient '+')
-    const isCollection = item.title.includes('+');
+    const isAnthology = item.title.includes('+');
     let medalIcon = item.rank === 1 ? '🥇' : item.rank === 2 ? '🥈' : item.rank === 3 ? '🥉' : '';
     
     let starsHtml = '';
@@ -262,7 +256,7 @@ function render() {
 
     card.innerHTML = `
       ${item.rank ? `<div class="medal-badge">${medalIcon}</div>` : ''}
-      ${isCollection ? `<div class="collection-badge">Anthologie</div>` : ''}
+      ${isAnthology ? `<div class="anthology-badge">Anthologie</div>` : ''}
       <div class="card-img">
         ${item.image ? `<img src="${item.image}">` : `<div style="height:100%; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:0.7rem;">Pas d'image</div>`}
         <div class="card-overlay ${isUnlocked ? '' : 'admin-only'}">
@@ -301,10 +295,12 @@ document.getElementById('confirmPhoto').onclick = () => {
 };
 
 function exportData() {
+  if(!isUnlocked) return;
   const blob = new Blob([JSON.stringify({lib, nextId})], {type: 'application/json'});
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'ma_biblio.json'; a.click();
 }
 function importData(e) {
+  if(!isUnlocked) return;
   const r = new FileReader();
   r.onload = (ev) => { const d = JSON.parse(ev.target.result); lib = d.lib; nextId = d.nextId; save(); render(); };
   r.readAsText(e.target.files[0]);

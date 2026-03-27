@@ -1,178 +1,6 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ma Bibliothèque</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230a0a0f'/%3E%3Ctext x='16' y='23' font-size='18' text-anchor='middle' fill='%23e8c97e' font-family='serif'%3E%E6%9C%AC%3C/text%3E%3C/svg%3E">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
-
-<style>
-  :root {
-    --bg: #0a0a0f;
-    --surface: #111118;
-    --surface2: #1a1a24;
-    --border: rgba(255,255,255,0.06);
-    --accent: #e8c97e;
-    --accent2: #c4a55a;
-    --text: #e8e6e0;
-    --muted: #8a8992;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body { 
-    background: var(--bg); 
-    color: var(--text); 
-    font-family: 'Inter', sans-serif; /* Nouvelle police corps de texte */
-    font-weight: 300; 
-    min-height: 100vh; 
-    -webkit-font-smoothing: antialiased;
-  }
-
-  body::before {
-    content: ''; position: fixed; inset: 0;
-    background: radial-gradient(ellipse 60% 40% at 80% 20%, rgba(232,201,126,0.04) 0%, transparent 70%),
-                radial-gradient(ellipse 40% 60% at 20% 80%, rgba(100,80,160,0.04) 0%, transparent 70%);
-    pointer-events: none; z-index: 0;
-  }
-
-  .container { max-width: 1400px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
-
-  header {
-    padding: 80px 0 50px; border-bottom: 1px solid var(--border); margin-bottom: 48px;
-    display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap;
-  }
-
-  h1 { 
-    font-family: 'Playfair Display', serif; /* Nouvelle police titres */
-    font-size: clamp(2.5rem, 5vw, 4rem); 
-    font-weight: 700; 
-    font-style: italic;
-    letter-spacing: -0.01em; 
-    line-height: 1; 
-  }
-  
-  h1 span { color: var(--accent); font-style: normal; }
-
-  .subtitle { 
-    margin-top: 12px; 
-    color: var(--muted); 
-    font-size: 0.75rem; 
-    letter-spacing: 0.2em; 
-    text-transform: uppercase; 
-    font-weight: 600;
-  }
-
-  .count { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 700; color: var(--accent); line-height: 1; text-align: right; }
-  .count-label { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-top: 4px; text-align: right; font-weight: 600; }
-
-  .topbar { display: flex; gap: 16px; align-items: center; margin-bottom: 24px; }
-  .search-wrap { flex: 1; position: relative; }
-  .search-wrap input {
-    width: 100%; background: var(--surface); border: 1px solid var(--border); color: var(--text);
-    padding: 14px 16px 14px 46px; font-family: 'Inter', sans-serif; font-size: 0.9rem;
-    border-radius: 12px; outline: none; transition: all 0.3s ease;
-  }
-  .search-wrap input:focus { border-color: var(--accent); background: var(--surface2); }
-  .search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 1.1rem; }
-
-  .add-btn {
-    background: var(--accent); border: none; color: var(--bg);
-    padding: 12px 24px; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 600;
-    border-radius: 12px; cursor: pointer; transition: all 0.2s;
-  }
-  .add-btn:hover { background: var(--accent2); transform: translateY(-1px); }
-
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 20px; padding-bottom: 80px; }
-  
-  .card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
-    overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .card:hover { transform: translateY(-6px); border-color: rgba(232,201,126,0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-  
-  .card-img { width: 100%; aspect-ratio: 2/3; position: relative; overflow: hidden; background: var(--surface2); }
-  .card-info { padding: 16px; }
-  .card-title { 
-    font-family: 'Inter', sans-serif; 
-    font-size: 0.9rem; 
-    font-weight: 600; 
-    line-height: 1.4; 
-    color: #fff;
-  }
-
-  /* Reste du CSS conservé mais polices adaptées */
-  .modal h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 24px; }
-  .field label { font-weight: 600; font-size: 0.65rem; }
-  
-  /* ... (autres styles identiques au précédent) ... */
-  .progress-label { font-size: 0.75rem; color: var(--muted); margin-bottom: 8px; letter-spacing: 0.05em; min-height: 18px; }
-  .progress-bar-wrap { height: 2px; background: var(--border); border-radius: 2px; margin-bottom: 32px; overflow: hidden; opacity: 0; transition: opacity 0.3s; }
-  .progress-bar-wrap.visible { opacity: 1; }
-  .progress-bar { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease; width: 0%; }
-  .card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s ease; }
-  .card:hover .card-img img { transform: scale(1.08); }
-  .placeholder { width: 100%; height: 100%; background: var(--surface2); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
-  .spin { font-size: 1.4rem; color: var(--muted); animation: spin 1.5s linear infinite; }
-  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-  .card-overlay { position: absolute; inset: 0; background: rgba(10,10,15,0.85); display: flex; align-items: center; justify-content: center; gap: 12px; opacity: 0; transition: opacity 0.2s; backdrop-filter: blur(2px); }
-  .card:hover .card-overlay { opacity: 1; }
-  .ov-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-  .ov-btn.photo:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
-  .ov-btn.del:hover { background: #f87171; color: #fff; border-color: #f87171; }
-  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-  .modal-bg.open { opacity: 1; pointer-events: all; }
-  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 40px; width: 100%; max-width: 420px; }
-  .field { margin-bottom: 20px; }
-  .field input { width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 12px 16px; border-radius: 10px; outline: none; }
-  .modal-actions { display: flex; gap: 12px; margin-top: 24px; }
-  .btn-ok { flex: 1; background: var(--accent); color: #0a0a0f; border: none; padding: 12px; font-weight: 600; border-radius: 10px; cursor: pointer; }
-  .btn-no { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 12px 20px; border-radius: 10px; cursor: pointer; }
-  .or-sep { text-align: center; color: var(--muted); font-size: 0.75rem; margin: 15px 0; }
-  .file-btn { width: 100%; background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 12px; border-radius: 10px; cursor: pointer; }
-  #fileInput { display: none; }
-</style>
-</head>
-<body>
-
-<div class="container">
-  <header>
-    <div>
-      <h1>Ma <span>Bibliothèque</span></h1>
-      <p class="subtitle">Animés · Mangas · Films</p>
-    </div>
-    <div>
-      <div class="count" id="total">0</div>
-      <div class="count-label">Œuvres</div>
-    </div>
-  </header>
-
-  <div class="topbar">
-    <div class="search-wrap">
-      <span class="search-icon">⌕</span>
-      <input type="text" id="search" placeholder="Rechercher une œuvre…">
-    </div>
-    <button class="add-btn" id="openAdd">＋ Ajouter</button>
-  </div>
-
-  <div class="progress-label" id="progressLabel"></div>
-  <div class="progress-bar-wrap" id="progressWrap">
-    <div class="progress-bar" id="progressBar"></div>
-  </div>
-
-  <div class="grid" id="grid"></div>
-</div>
-
-<div class="modal-bg" id="addModal"><div class="modal"><h2>Ajouter une œuvre</h2><div class="field"><label>Titre</label><input type="text" id="newTitle" placeholder="Ex: Frieren"></div><div class="modal-actions"><button class="btn-no" id="cancelAdd">Annuler</button><button class="btn-ok" id="confirmAdd">Ajouter</button></div></div></div>
-<div class="modal-bg" id="photoModal"><div class="modal"><h2>Modifier la photo</h2><div class="field"><label>URL de l'image</label><input type="text" id="photoUrl" placeholder="https://…"></div><div class="or-sep">— ou —</div><button class="file-btn" id="triggerFile">📁 Choisir un fichier local</button><input type="file" id="fileInput" accept="image/*"><div class="modal-actions"><button class="btn-no" id="cancelPhoto">Annuler</button><button class="btn-ok" id="confirmPhoto">Appliquer</button></div></div></div>
-
-<script>
 const KEY = 'anime_lib_v4';
 
+// La liste MASTER mise à jour
 const MASTER = [
   ["Inazuma Eleven", "Inazuma Eleven", "anime"],
   ["Assassination Classroom", "Assassination Classroom", "anime"],
@@ -202,7 +30,7 @@ const MASTER = [
   ["Tower of God", "Tower of God", "anime"],
   ["Yuri On Ice", "Yuri on Ice", "anime"],
   ["Your Lie In April", "Shigatsu wa Kimi no Uso", "anime"],
-  ["Fullmetal Alchemist: Brotherhood", "Fullmetal Alchemist Brotherhood", "anime"], // MODIFIÉ ICI
+  ["Fullmetal Alchemist: Brotherhood", "Fullmetal Alchemist Brotherhood", "anime"],
   ["Mirai Nikki", "Mirai Nikki", "anime"],
   ["God Of Highschool", "The God of High School", "anime"],
   ["Black Clover", "Black Clover", "anime"],
@@ -309,12 +137,28 @@ let fetchQueue = [], fetching = false, fetchedCount = 0, totalToFetch = 0;
 function load() {
   try {
     const s = localStorage.getItem(KEY);
-    if (s) { const d = JSON.parse(s); lib = d.lib; nextId = d.nextId; return; }
+    if (s) { 
+      const d = JSON.parse(s); 
+      lib = d.lib; 
+      nextId = d.nextId; 
+      
+      // --- CORRECTIF CHIRURGICAL ---
+      // On cherche FMAB et on le renomme s'il existe dans tes données sauvegardées
+      let target = lib.find(item => item.title === "FMAB");
+      if (target) {
+        target.title = "Fullmetal Alchemist: Brotherhood";
+        save(); // On enregistre immédiatement le changement de nom
+      }
+      // ------------------------------
+      
+      return; 
+    }
   } catch(e) {}
   lib = MASTER.map((m, i) => ({ id: i + 1, title: m[0], query: m[1], type: m[2], image: null }));
   nextId = lib.length + 1;
 }
 
+// Le reste du script reste identique à partir d'ici...
 function save() { localStorage.setItem(KEY, JSON.stringify({ lib, nextId })); }
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -422,5 +266,3 @@ document.getElementById('search').oninput = render;
 
 load(); render();
 </script>
-</body>
-</html>

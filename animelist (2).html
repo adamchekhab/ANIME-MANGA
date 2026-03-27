@@ -13,7 +13,7 @@
 <style>
   :root {
     --bg: #050508;
-    --surface: #0e0e14;
+    --surface: rgba(14, 14, 20, 0.8); /* Translucide pour le fond texturé */
     --surface2: #161620;
     --border: rgba(255,255,255,0.06);
     --accent: #e8c97e;
@@ -27,7 +27,7 @@
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   
-  /* REMISE DU FOND NOIR SOBRE ET ÉPURÉ */
+  /* FOND ATYPIQUE : Grain + Grille */
   body { 
     background: var(--bg); 
     color: var(--text); 
@@ -36,12 +36,23 @@
     min-height: 100vh; 
     -webkit-font-smoothing: antialiased; 
     overflow-x: hidden;
+    /* Texture de grain subtile */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-size: 150px;
+    background-attachment: fixed;
   }
   
   body::before {
     content: ''; position: fixed; inset: 0;
-    background: radial-gradient(ellipse 60% 40% at 80% 20%, rgba(232,201,126,0.05) 0%, transparent 70%);
-    pointer-events: none; z-index: 0;
+    /* Grille et halo de lumière */
+    background-image: 
+      radial-gradient(circle at 50% 50%, rgba(232,201,126,0.03) 0%, transparent 80%),
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 100% 100%, 60px 60px, 60px 60px;
+    pointer-events: none; 
+    z-index: 0;
+    opacity: 0.6;
   }
 
   .container { max-width: 1400px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
@@ -56,20 +67,22 @@
   .subtitle { margin-top: 8px; color: var(--muted); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; }
 
   .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+  .tools { display: flex; gap: 8px; align-items: center; }
+  
+  .lock-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--accent); width: 40px; height: 40px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: 0.2s; margin-left: 10px; }
+  .lock-btn:hover { border-color: var(--accent); box-shadow: 0 0 15px rgba(232,201,126,0.2); }
+
+  .tool-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); padding: 6px 12px; font-size: 0.6rem; border-radius: 6px; cursor: pointer; text-transform: uppercase; font-weight: 700; transition: 0.2s; }
+  .admin-only { display: none !important; }
+  body.unlocked .admin-only { display: flex !important; }
+
   .count-box { display: flex; flex-direction: column; align-items: flex-end; }
   .count { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: var(--accent); line-height: 1; font-weight: 700; }
   .count-label { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-top: 4px; font-weight: 600; }
 
-  .tools { display: flex; gap: 8px; align-items: center; }
-  .lock-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--accent); width: 40px; height: 40px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: 0.2s; }
-  .tool-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); padding: 6px 12px; font-size: 0.6rem; border-radius: 6px; cursor: pointer; text-transform: uppercase; font-weight: 700; }
-  
-  .admin-only { display: none !important; }
-  body.unlocked .admin-only { display: flex !important; }
-
   .topbar { display: flex; gap: 12px; align-items: center; margin-bottom: 30px; flex-wrap: wrap; }
   .search-wrap { flex: 2; position: relative; min-width: 200px; }
-  .search-wrap input { width: 100%; background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 14px 16px 14px 46px; font-size: 0.9rem; border-radius: 12px; outline: none; }
+  .search-wrap input { width: 100%; background: rgba(14, 14, 20, 0.6); border: 1px solid var(--border); color: var(--text); padding: 14px 16px 14px 46px; font-size: 0.9rem; border-radius: 12px; outline: none; backdrop-filter: blur(4px); }
   .search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--muted); }
 
   select { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 12px; border-radius: 12px; outline: none; cursor: pointer; font-family: inherit; font-size: 0.85rem; }
@@ -78,7 +91,7 @@
 
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 25px; padding-bottom: 60px; }
   
-  /* CARDS OPACQUES */
+  /* CARDS */
   .card { 
     background: var(--surface); 
     border: 1px solid var(--border); 
@@ -86,15 +99,33 @@
     overflow: hidden; 
     position: relative; 
     transition: 0.4s cubic-bezier(0.2, 1, 0.2, 1);
+    backdrop-filter: blur(10px); /* Effet verre */
   }
   .card:hover { transform: translateY(-10px); border-color: rgba(232,201,126,0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.8); }
   
   .rank-1 { border: 2px solid var(--gold); }
   .rank-2 { border: 2px solid var(--silver); }
   .rank-3 { border: 2px solid var(--bronze); }
+  
+  /* ÉCLAT AU SURVOL */
+  .card::before {
+    content: ''; position: absolute; top: 0; left: -150%; width: 80%; height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+    transform: skewX(-25deg); transition: 0.7s; z-index: 6; pointer-events: none;
+  }
+  .card:hover::before { left: 150%; }
+
+  /* SHIMMER PODIUM */
+  .card.rank-1::after, .card.rank-2::after, .card.rank-3::after {
+    content: ''; position: absolute; top: -100%; left: -100%; width: 300%; height: 300%;
+    background: linear-gradient(45deg, transparent 45%, rgba(255,255,255,0.3) 50%, transparent 55%);
+    animation: shimmer 4s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    pointer-events: none; z-index: 3;
+  }
+  @keyframes shimmer { 0% { transform: translateX(-20%) translateY(-20%); } 100% { transform: translateX(20%) translateY(20%); } }
 
   .medal-badge { position: absolute; top: 12px; left: 12px; z-index: 5; font-size: 1.6rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.8)); }
-  .anthology-badge { position: absolute; top: 12px; right: 12px; z-index: 5; background: var(--accent); color: #000; padding: 3px 8px; border-radius: 4px; font-size: 0.55rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+  .ongoing-badge { position: absolute; top: 12px; right: 12px; z-index: 5; background: var(--accent); color: var(--bg); padding: 4px 10px; font-size: 0.6rem; font-weight: 800; border-radius: 6px; text-transform: uppercase; }
 
   .card-img { width: 100%; aspect-ratio: 2/3; position: relative; background: var(--surface2); overflow: hidden; }
   .card-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s; }
@@ -107,13 +138,14 @@
   .ov-btn.active-gold { background: var(--gold); color: black; border-color: var(--gold); }
   .ov-btn.active-silver { background: var(--silver); color: black; border-color: var(--silver); }
   .ov-btn.active-bronze { background: var(--bronze); color: black; border-color: var(--bronze); }
+  .ov-btn.active-ongoing { background: var(--text); color: var(--bg); border-color: var(--text); }
 
   .card-info { padding: 15px; position: relative; z-index: 2; }
-  .card-title { font-size: 0.85rem; font-weight: 600; color: #fff; margin-bottom: 8px; height: 2.6em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
+  .card-title { font-size: 0.9rem; font-weight: 600; color: #fff; margin-bottom: 10px; height: 2.6em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
 
-  .stars { display: flex; gap: 3px; }
-  .star { font-size: 1.1rem; color: #2a2a35; transition: 0.1s; pointer-events: none; }
-  body.unlocked .star { pointer-events: all; cursor: pointer; }
+  .stars { display: flex; gap: 3px; position: relative; z-index: 8; }
+  .star { font-size: 1.2rem; cursor: pointer; color: #2a2a35; position: relative; transition: 0.1s; pointer-events: none; }
+  body.unlocked .star { pointer-events: all; }
   .star.full { color: var(--star); text-shadow: 0 0 8px rgba(255, 204, 51, 0.4); }
   .star.half::after { content: '★'; position: absolute; left: 0; width: 50%; overflow: hidden; color: var(--star); }
 
@@ -142,7 +174,7 @@
             <button class="tool-btn" onclick="document.getElementById('importFile').click()">⬆ Import</button>
             <input type="file" id="importFile" style="display:none" onchange="importData(event)" accept=".json">
         </div>
-        <button class="lock-btn" id="lockTrigger" onclick="handleAuth()">🔒</button>
+        <button class="lock-btn" id="lockTrigger" onclick="handleAuth()" title="Accès administrateur">🔒</button>
       </div>
       <div class="count-box">
         <div class="count" id="total">0</div>
@@ -174,20 +206,28 @@
   <div class="grid" id="grid"></div>
 </div>
 
-<div class="modal-bg" id="addModal"><div class="modal"><h2>Nouvelle œuvre</h2><input type="text" id="newTitle" placeholder="Ex: Death Note + Short Stories"><div class="modal-actions"><button class="btn-no" onclick="closeM('addModal')">Annuler</button><button class="btn-ok" id="confirmAdd">Ajouter</button></div></div></div>
-<div class="modal-bg" id="photoModal"><div class="modal"><h2>Lien de l'image</h2><input type="text" id="photoUrl" placeholder="URL de la couverture..."><div class="modal-actions"><button class="btn-no" onclick="closeM('photoModal')">Annuler</button><button class="btn-ok" id="confirmPhoto">Sauvegarder</button></div></div></div>
+<div class="modal-bg" id="addModal"><div class="modal"><h2>Nouvelle œuvre</h2><input type="text" id="newTitle" placeholder="Ex: Berserk"><div class="modal-actions"><button class="btn-no" onclick="closeM('addModal')">Annuler</button><button class="btn-ok" id="confirmAdd">Ajouter</button></div></div></div>
+<div class="modal-bg" id="photoModal"><div class="modal"><h2>L'image parfaite</h2><input type="text" id="photoUrl" placeholder="Lien de l'image..."><div style="margin:20px 0; text-align:center; color:var(--muted); font-size:0.8rem;">— OU —</div><button class="btn-no" style="width:100%" onclick="document.getElementById('fileInput').click()">📁 Fichier local</button><input type="file" id="fileInput" style="display:none" accept="image/*"><div class="modal-actions"><button class="btn-no" onclick="closeM('photoModal')">Annuler</button><button class="btn-ok" id="confirmPhoto">Sauvegarder</button></div></div></div>
 
 <script>
 const KEY = 'anime_lib_v4';
 const PASS = '0451';
-let lib = [], nextId = 1, isUnlocked = false, photoTarget = null;
+let lib = [], nextId = 1, photoTarget = null, pendingFile = null, isUnlocked = false;
 
 function handleAuth() {
   if (!isUnlocked) {
-    const p = prompt("Accès modification :");
-    if (p === PASS) { isUnlocked = true; document.body.classList.add('unlocked'); document.getElementById('lockTrigger').textContent = "🔓"; render(); }
+    const p = prompt("Entrez le mot de passe pour modifier :");
+    if (p === PASS) {
+      isUnlocked = true;
+      document.body.classList.add('unlocked');
+      document.getElementById('lockTrigger').textContent = "🔓";
+      render();
+    } else if (p !== null) alert("Accès refusé.");
   } else {
-    isUnlocked = false; document.body.classList.remove('unlocked'); document.getElementById('lockTrigger').textContent = "🔒"; render();
+    isUnlocked = false;
+    document.body.classList.remove('unlocked');
+    document.getElementById('lockTrigger').textContent = "🔒";
+    render();
   }
 }
 
@@ -203,7 +243,7 @@ function setRating(id, val, event) {
   const rect = event.target.getBoundingClientRect();
   const finalVal = val - ((event.clientX - rect.left) < rect.width / 2 ? 0.5 : 0);
   const itm = lib.find(i => i.id === id);
-  if(itm) { itm.rating = (itm.rating === finalVal) ? 0 : finalVal; save(); render(); }
+  if(itm) { itm.rating = (itm.rating === finalVal) ? 0 : finalVal; save(); updateStarsOnly(id); }
 }
 
 function setMedal(id, rank) {
@@ -212,6 +252,24 @@ function setMedal(id, rank) {
   const itm = lib.find(i => i.id === id);
   if(itm) itm.rank = (itm.rank === rank) ? 0 : rank;
   save(); render(); 
+}
+
+function toggleOngoing(id) {
+  if(!isUnlocked) return;
+  const itm = lib.find(i => i.id === id);
+  if(itm) { itm.ongoing = !itm.ongoing; save(); render(); }
+}
+
+function updateStarsOnly(id) {
+  const itm = lib.find(i => i.id === id);
+  const container = document.querySelector(`.card[data-id="${id}"] .stars`);
+  if(!itm || !container) return;
+  let html = '';
+  for(let i=1; i<=5; i++) {
+    let cls = itm.rating >= i ? 'full' : (itm.rating === i-0.5 ? 'half' : '');
+    html += `<span class="star ${cls}" onclick="setRating(${itm.id}, ${i}, event)">★</span>`;
+  }
+  container.innerHTML = html;
 }
 
 function render() {
@@ -243,11 +301,9 @@ function render() {
   list.forEach(item => {
     const card = document.createElement('div');
     card.className = `card ${item.rank ? 'rank-'+item.rank : ''}`;
+    card.dataset.id = item.id;
     
-    // Détection Anthologie (si le titre contient '+')
-    const isAnthology = item.title.includes('+');
     let medalIcon = item.rank === 1 ? '🥇' : item.rank === 2 ? '🥈' : item.rank === 3 ? '🥉' : '';
-    
     let starsHtml = '';
     for(let i=1; i<=5; i++) {
       let cls = (item.rating || 0) >= i ? 'full' : ((item.rating || 0) === i-0.5 ? 'half' : '');
@@ -256,13 +312,16 @@ function render() {
 
     card.innerHTML = `
       ${item.rank ? `<div class="medal-badge">${medalIcon}</div>` : ''}
-      ${isAnthology ? `<div class="anthology-badge">Anthologie</div>` : ''}
+      ${item.ongoing ? `<div class="ongoing-badge">En cours</div>` : ''}
       <div class="card-img">
-        ${item.image ? `<img src="${item.image}">` : `<div style="height:100%; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:0.7rem;">Pas d'image</div>`}
+        ${item.image ? `<img src="${item.image}">` : `<div style="height:100%; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:0.8rem;">Image vide</div>`}
         <div class="card-overlay ${isUnlocked ? '' : 'admin-only'}">
-          <button class="ov-btn" onclick="openP(${item.id})">✎</button>
-          <button class="ov-btn" onclick="del(${item.id})">✕</button>
-          <div style="display:flex; gap:5px; margin-top:10px;">
+          <div class="ov-row">
+            <button class="ov-btn" onclick="openP(${item.id})">✎</button>
+            <button class="ov-btn ${item.ongoing ? 'active-ongoing' : ''}" onclick="toggleOngoing(${item.id})">🔖</button>
+            <button class="ov-btn" onclick="del(${item.id})">✕</button>
+          </div>
+          <div class="ov-row" style="margin-top:5px; border-top:1px solid rgba(255,255,255,0.1); padding-top:10px;">
             <button class="ov-btn ${item.rank===1?'active-gold':''}" onclick="setMedal(${item.id}, 1)">🥇</button>
             <button class="ov-btn ${item.rank===2?'active-silver':''}" onclick="setMedal(${item.id}, 2)">🥈</button>
             <button class="ov-btn ${item.rank===3?'active-bronze':''}" onclick="setMedal(${item.id}, 3)">🥉</button>
@@ -278,21 +337,9 @@ function render() {
   });
 }
 
-function openP(id) { photoTarget = id; document.getElementById('photoModal').classList.add('open'); }
+function del(id) { if(!isUnlocked) return; if(confirm("Supprimer ?")) { lib = lib.filter(i => i.id !== id); save(); render(); } }
+function openP(id) { if(!isUnlocked) return; photoTarget = id; document.getElementById('photoModal').classList.add('open'); }
 function closeM(id) { document.getElementById(id).classList.remove('open'); }
-function del(id) { if(confirm("Supprimer ?")) { lib = lib.filter(i => i.id !== id); save(); render(); } }
-
-document.getElementById('confirmAdd').onclick = () => {
-  const t = document.getElementById('newTitle').value.trim();
-  if(t) { lib.push({id: nextId++, title: t, image: null, rating: 0, rank: 0}); save(); render(); closeM('addModal'); document.getElementById('newTitle').value=''; }
-};
-
-document.getElementById('confirmPhoto').onclick = () => {
-  const url = document.getElementById('photoUrl').value.trim();
-  const itm = lib.find(i => i.id === photoTarget);
-  if(itm) { itm.image = url; save(); render(); }
-  closeM('photoModal'); document.getElementById('photoUrl').value='';
-};
 
 function exportData() {
   if(!isUnlocked) return;
@@ -302,11 +349,28 @@ function exportData() {
 function importData(e) {
   if(!isUnlocked) return;
   const r = new FileReader();
-  r.onload = (ev) => { const d = JSON.parse(ev.target.result); lib = d.lib; nextId = d.nextId; save(); render(); };
+  r.onload = (ev) => { try { const d = JSON.parse(ev.target.result); lib = d.lib; nextId = d.nextId; save(); render(); } catch(err){alert("Erreur.");} };
   r.readAsText(e.target.files[0]);
 }
 
-document.getElementById('openAdd').onclick = () => document.getElementById('addModal').classList.add('open');
+document.getElementById('confirmAdd').onclick = () => {
+  if(!isUnlocked) return;
+  const t = document.getElementById('newTitle').value.trim();
+  if(t) { lib.push({id: nextId++, title: t, image: null, rating: 0, rank: 0, ongoing: false}); save(); render(); closeM('addModal'); document.getElementById('newTitle').value=''; }
+};
+
+document.getElementById('fileInput').onchange = e => {
+  const r = new FileReader(); r.onload = ev => { pendingFile = ev.target.result; document.getElementById('photoUrl').value = "Fichier prêt ✓"; };
+  r.readAsDataURL(e.target.files[0]);
+};
+
+document.getElementById('confirmPhoto').onclick = () => {
+  const itm = lib.find(i => i.id === photoTarget);
+  if(itm) { itm.image = pendingFile || document.getElementById('photoUrl').value.trim(); save(); render(); }
+  closeM('photoModal'); pendingFile = null; document.getElementById('photoUrl').value='';
+};
+
+document.getElementById('openAdd').onclick = () => { if(isUnlocked) document.getElementById('addModal').classList.add('open'); };
 document.getElementById('search').oninput = render;
 
 load(); render();

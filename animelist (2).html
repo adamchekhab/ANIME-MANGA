@@ -52,9 +52,6 @@
   .lock-btn:hover { border-color: var(--accent); box-shadow: 0 0 15px rgba(232,201,126,0.2); }
 
   .tool-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); padding: 6px 12px; font-size: 0.6rem; border-radius: 6px; cursor: pointer; text-transform: uppercase; font-weight: 700; transition: 0.2s; }
-  .tool-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-  /* GESTION VISIBILITÉ ÉDITION */
   .admin-only { display: none !important; }
   body.unlocked .admin-only { display: flex !important; }
 
@@ -64,19 +61,16 @@
 
   .topbar { display: flex; gap: 12px; align-items: center; margin-bottom: 30px; flex-wrap: wrap; }
   .search-wrap { flex: 2; position: relative; min-width: 200px; }
-  .search-wrap input {
-    width: 100%; background: var(--surface); border: 1px solid var(--border); color: var(--text);
-    padding: 14px 16px 14px 46px; font-size: 0.9rem; border-radius: 12px; outline: none; transition: 0.3s;
-  }
+  .search-wrap input { width: 100%; background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 14px 16px 14px 46px; font-size: 0.9rem; border-radius: 12px; outline: none; }
   .search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--muted); }
 
   select { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 12px; border-radius: 12px; outline: none; cursor: pointer; font-family: inherit; font-size: 0.85rem; }
 
-  .add-btn { background: var(--accent); color: var(--bg); padding: 12px 24px; font-weight: 600; border-radius: 12px; cursor: pointer; border: none; transition: 0.2s; }
+  .add-btn { background: var(--accent); color: var(--bg); padding: 12px 24px; font-weight: 600; border-radius: 12px; cursor: pointer; border: none; }
 
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 25px; padding-bottom: 60px; }
   
-  /* CARDS */
+  /* CARDS & ANIMATIONS */
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; position: relative; transition: 0.4s cubic-bezier(0.2, 1, 0.2, 1); }
   .card:hover { transform: translateY(-10px); border-color: rgba(232,201,126,0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.8); }
   
@@ -84,7 +78,7 @@
   .rank-2 { border: 2px solid var(--silver); }
   .rank-3 { border: 2px solid var(--bronze); }
   
-  /* ÉCLAT AU SURVOL (FLASH) */
+  /* ÉCLAT AU SURVOL */
   .card::before {
     content: ''; position: absolute; top: 0; left: -150%; width: 80%; height: 100%;
     background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
@@ -92,17 +86,14 @@
   }
   .card:hover::before { left: 150%; }
 
-  /* EFFET SHIMMER (SCINTILLEMENT PODIUM) - BOOSTÉ */
+  /* SHIMMER PODIUM BOOSTÉ */
   .card.rank-1::after, .card.rank-2::after, .card.rank-3::after {
     content: ''; position: absolute; top: -100%; left: -100%; width: 300%; height: 300%;
     background: linear-gradient(45deg, transparent 45%, rgba(255,255,255,0.3) 50%, transparent 55%);
     animation: shimmer 4s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
     pointer-events: none; z-index: 3;
   }
-  @keyframes shimmer { 
-    0% { transform: translateX(-20%) translateY(-20%); } 
-    100% { transform: translateX(20%) translateY(20%); } 
-  }
+  @keyframes shimmer { 0% { transform: translateX(-20%) translateY(-20%); } 100% { transform: translateX(20%) translateY(20%); } }
 
   .medal-badge { position: absolute; top: 12px; left: 12px; z-index: 5; font-size: 1.6rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.8)); }
   .ongoing-badge {
@@ -119,9 +110,7 @@
   .card-overlay { position: absolute; inset: 0; background: rgba(5,5,8,0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; opacity: 0; transition: 0.3s; backdrop-filter: blur(6px); z-index: 7; }
   .card:hover .card-overlay { opacity: 1; }
   
-  .ov-row { display: flex; gap: 8px; justify-content: center; width: 100%; }
-  
-  .ov-btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 1rem; z-index: 8; }
+  .ov-btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 1rem; }
   .ov-btn:hover { background: var(--accent); color: var(--bg); transform: scale(1.1); }
   .ov-btn.active-gold { background: var(--gold); color: black; border-color: var(--gold); }
   .ov-btn.active-silver { background: var(--silver); color: black; border-color: var(--silver); }
@@ -179,11 +168,8 @@
     
     <select id="filterRating" onchange="render()">
       <option value="all">Toutes les notes</option>
-      <option value="ongoing">En cours uniquement</option>
       <option value="5">⭐⭐⭐⭐⭐ (5)</option>
       <option value="4">⭐⭐⭐⭐ (4+)</option>
-      <option value="3">⭐⭐⭐ (3+)</option>
-      <option value="0">Sans note</option>
     </select>
 
     <select id="sortSelect" onchange="render()">
@@ -271,12 +257,8 @@ function render() {
   let list = [...lib];
   if(searchQ) list = list.filter(i => i.title.toLowerCase().includes(searchQ));
   if(filterVal !== 'all') {
-    if(filterVal === 'ongoing') list = list.filter(i => i.ongoing);
-    else {
       const fv = parseFloat(filterVal);
-      if(fv === 0) list = list.filter(i => !i.rating || i.rating === 0);
-      else list = list.filter(i => i.rating >= fv);
-    }
+      list = list.filter(i => (i.rating || 0) >= fv);
   }
   
   list.sort((a, b) => {

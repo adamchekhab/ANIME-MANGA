@@ -70,7 +70,6 @@
 
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 25px; padding-bottom: 60px; }
   
-  /* CARDS & ANIMATIONS */
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; position: relative; transition: 0.4s cubic-bezier(0.2, 1, 0.2, 1); }
   .card:hover { transform: translateY(-10px); border-color: rgba(232,201,126,0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.8); }
   
@@ -78,7 +77,6 @@
   .rank-2 { border: 2px solid var(--silver); }
   .rank-3 { border: 2px solid var(--bronze); }
   
-  /* ÉCLAT AU SURVOL */
   .card::before {
     content: ''; position: absolute; top: 0; left: -150%; width: 80%; height: 100%;
     background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
@@ -86,7 +84,6 @@
   }
   .card:hover::before { left: 150%; }
 
-  /* SHIMMER PODIUM BOOSTÉ */
   .card.rank-1::after, .card.rank-2::after, .card.rank-3::after {
     content: ''; position: absolute; top: -100%; left: -100%; width: 300%; height: 300%;
     background: linear-gradient(45deg, transparent 45%, rgba(255,255,255,0.3) 50%, transparent 55%);
@@ -209,9 +206,28 @@ function handleAuth() {
 }
 
 function save() { if(isUnlocked) localStorage.setItem(KEY, JSON.stringify({ lib, nextId })); }
+
 function load() {
   const s = localStorage.getItem(KEY);
-  if (s) { try { const d = JSON.parse(s); lib = d.lib || []; nextId = d.nextId || 1; } catch(e) { lib = []; } } 
+  if (s) { 
+    try { 
+      const d = JSON.parse(s); 
+      lib = d.lib || []; 
+      nextId = d.nextId || 1; 
+      cleanDeathNote(); // Fusion automatique
+    } catch(e) { lib = []; } 
+  } 
+}
+
+function cleanDeathNote() {
+    const matches = lib.filter(i => i.title.toLowerCase().includes('death note'));
+    if (matches.length > 1) {
+        const main = matches[0];
+        main.title = "Death Note + Short Stories";
+        const others = matches.slice(1).map(i => i.id);
+        lib = lib.filter(i => !others.includes(i.id));
+        save();
+    }
 }
 
 function setRating(id, val, event) {
@@ -293,12 +309,12 @@ function render() {
       <div class="card-img">
         ${item.image ? `<img src="${item.image}">` : `<div style="height:100%; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:0.8rem;">Image vide</div>`}
         <div class="card-overlay ${isUnlocked ? '' : 'admin-only'}">
-          <div class="ov-row">
+          <div style="display:flex; gap:10px;">
             <button class="ov-btn" onclick="openP(${item.id})">✎</button>
             <button class="ov-btn ${item.ongoing ? 'active-ongoing' : ''}" onclick="toggleOngoing(${item.id})">🔖</button>
             <button class="ov-btn" onclick="del(${item.id})">✕</button>
           </div>
-          <div class="ov-row" style="margin-top:5px; border-top:1px solid rgba(255,255,255,0.1); padding-top:10px;">
+          <div style="margin-top:5px; border-top:1px solid rgba(255,255,255,0.1); padding-top:10px; display:flex; gap:5px;">
             <button class="ov-btn ${item.rank===1?'active-gold':''}" onclick="setMedal(${item.id}, 1)">🥇</button>
             <button class="ov-btn ${item.rank===2?'active-silver':''}" onclick="setMedal(${item.id}, 2)">🥈</button>
             <button class="ov-btn ${item.rank===3?'active-bronze':''}" onclick="setMedal(${item.id}, 3)">🥉</button>
@@ -326,7 +342,7 @@ function exportData() {
 function importData(e) {
   if(!isUnlocked) return;
   const r = new FileReader();
-  r.onload = (ev) => { try { const d = JSON.parse(ev.target.result); lib = d.lib; nextId = d.nextId; save(); render(); } catch(err){alert("Erreur.");} };
+  r.onload = (ev) => { try { const d = JSON.parse(ev.target.result); lib = d.lib; nextId = d.nextId; cleanDeathNote(); save(); render(); } catch(err){alert("Erreur.");} };
   r.readAsText(e.target.files[0]);
 }
 

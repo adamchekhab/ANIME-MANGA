@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ma Bibliothèque</title>
+<title>Ma Bibliothèque Premium</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230a0a0f'/%3E%3Ctext x='16' y='23' font-size='18' text-anchor='middle' fill='%23e8c97e' font-family='serif'%3E%E6%9C%AC%3C/text%3E%3C/svg%3E">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,105 +21,97 @@
     --text: #e8e6e0;
     --muted: #8a8992;
     --star: #ffcc33;
+    --gold: #ffd700;
+    --silver: #c0c0c0;
+    --bronze: #cd7f32;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body { 
-    background: var(--bg); 
-    color: var(--text); 
-    font-family: 'Inter', sans-serif; 
-    font-weight: 300; 
-    min-height: 100vh; 
-    -webkit-font-smoothing: antialiased;
-  }
-
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-weight: 300; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  
   body::before {
     content: ''; position: fixed; inset: 0;
-    background: radial-gradient(ellipse 60% 40% at 80% 20%, rgba(232,201,126,0.04) 0%, transparent 70%),
-                radial-gradient(ellipse 40% 60% at 20% 80%, rgba(100,80,160,0.04) 0%, transparent 70%);
+    background: radial-gradient(ellipse 60% 40% at 80% 20%, rgba(232,201,126,0.04) 0%, transparent 70%);
     pointer-events: none; z-index: 0;
   }
 
   .container { max-width: 1400px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
 
   header {
-    padding: 80px 0 50px; border-bottom: 1px solid var(--border); margin-bottom: 48px;
+    padding: 60px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 40px;
     display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap;
   }
 
-  h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700; font-style: italic; letter-spacing: -0.01em; line-height: 1; }
+  h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 700; font-style: italic; letter-spacing: -0.01em; }
   h1 span { color: var(--accent); font-style: normal; }
-
-  .subtitle { margin-top: 12px; color: var(--muted); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; }
+  .subtitle { margin-top: 8px; color: var(--muted); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; }
 
   .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
   .tools { display: flex; gap: 8px; }
-  .tool-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); padding: 6px 12px; font-size: 0.65rem; border-radius: 6px; cursor: pointer; text-transform: uppercase; font-weight: 600; transition: all 0.2s; }
+  .tool-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); padding: 6px 12px; font-size: 0.6rem; border-radius: 6px; cursor: pointer; text-transform: uppercase; font-weight: 700; transition: 0.2s; }
   .tool-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-  .count { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 700; color: var(--accent); line-height: 1; text-align: right; }
-  .count-label { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-top: 4px; text-align: right; font-weight: 600; }
+  .count { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--accent); line-height: 1; }
 
-  .topbar { display: flex; gap: 16px; align-items: center; margin-bottom: 24px; }
-  .search-wrap { flex: 1; position: relative; }
+  .topbar { display: flex; gap: 16px; align-items: center; margin-bottom: 30px; flex-wrap: wrap; }
+  .search-wrap { flex: 1; position: relative; min-width: 250px; }
   .search-wrap input {
     width: 100%; background: var(--surface); border: 1px solid var(--border); color: var(--text);
-    padding: 14px 16px 14px 46px; font-family: 'Inter', sans-serif; font-size: 0.9rem;
-    border-radius: 12px; outline: none; transition: all 0.3s ease;
+    padding: 14px 16px 14px 46px; font-size: 0.9rem; border-radius: 12px; outline: none;
   }
-  .search-wrap input:focus { border-color: var(--accent); background: var(--surface2); }
-  .search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 1.1rem; }
+  .search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--muted); }
 
-  .add-btn { background: var(--accent); border: none; color: var(--bg); padding: 12px 24px; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 600; border-radius: 12px; cursor: pointer; transition: all 0.2s; }
-  .add-btn:hover { background: var(--accent2); transform: translateY(-1px); }
+  select { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 12px; border-radius: 12px; outline: none; cursor: pointer; font-family: inherit; }
 
-  .progress-bar-wrap { height: 2px; background: var(--border); border-radius: 2px; margin-bottom: 32px; overflow: hidden; opacity: 0; transition: opacity 0.3s; }
-  .progress-bar-wrap.visible { opacity: 1; }
-  .progress-bar { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease; width: 0%; }
-  .progress-label { font-size: 0.75rem; color: var(--muted); margin-bottom: 8px; min-height: 18px; }
+  .add-btn { background: var(--accent); color: var(--bg); padding: 12px 24px; font-weight: 600; border-radius: 12px; cursor: pointer; border: none; }
 
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 20px; padding-bottom: 80px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 25px; padding-bottom: 60px; }
   
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); animation: fadeIn 0.4s ease both; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-  .card:hover { transform: translateY(-6px); border-color: rgba(232,201,126,0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; position: relative; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+  .card:hover { transform: translateY(-8px); border-color: rgba(232,201,126,0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
   
-  .card-img { width: 100%; aspect-ratio: 2/3; position: relative; overflow: hidden; background: var(--surface2); }
-  .card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s ease; }
-  .card:hover .card-img img { transform: scale(1.08); }
+  /* Médailles */
+  .card.rank-1 { border: 2px solid var(--gold); }
+  .card.rank-2 { border: 2px solid var(--silver); }
+  .card.rank-3 { border: 2px solid var(--bronze); }
+  
+  .medal-badge { position: absolute; top: 10px; left: 10px; z-index: 5; font-size: 1.5rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
 
-  .card-overlay { position: absolute; inset: 0; background: rgba(10,10,15,0.85); display: flex; align-items: center; justify-content: center; gap: 12px; opacity: 0; transition: opacity 0.2s; backdrop-filter: blur(2px); }
+  .card-img { width: 100%; aspect-ratio: 2/3; position: relative; background: var(--surface2); overflow: hidden; }
+  .card-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
+  .card:hover .card-img img { transform: scale(1.1); }
+
+  .card-overlay { position: absolute; inset: 0; background: rgba(10,10,15,0.9); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; opacity: 0; transition: 0.2s; backdrop-filter: blur(4px); }
   .card:hover .card-overlay { opacity: 1; }
   
-  .ov-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-  .ov-btn.photo:hover { background: var(--accent); color: var(--bg); }
-  .ov-btn.del:hover { background: #f87171; color: #fff; }
+  .actions-row { display: flex; gap: 10px; }
+  .medal-row { display: flex; gap: 8px; border-top: 1px solid rgba(255,255,255,0.1); pt: 15px; margin-top: 5px; padding-top: 15px; }
 
-  .card-info { padding: 14px; }
-  .card-title { font-size: 0.85rem; font-weight: 600; line-height: 1.3; color: #fff; margin-bottom: 8px; min-height: 2.3em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .ov-btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 1rem; }
+  .ov-btn:hover { background: var(--accent); color: var(--bg); }
+  .ov-btn.active-gold { background: var(--gold); color: black; }
+  .ov-btn.active-silver { background: var(--silver); color: black; }
+  .ov-btn.active-bronze { background: var(--bronze); color: black; }
 
-  /* Étoiles */
+  .card-info { padding: 15px; }
+  .card-title { font-size: 0.9rem; font-weight: 600; color: #fff; margin-bottom: 8px; height: 2.6em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+
   .stars { display: flex; gap: 2px; }
-  .star { font-size: 1.1rem; cursor: pointer; color: var(--surface2); position: relative; display: inline-block; transition: transform 0.1s; }
-  .star:hover { transform: scale(1.2); }
+  .star { font-size: 1.1rem; cursor: pointer; color: var(--surface2); position: relative; }
   .star.full { color: var(--star); }
   .star.half::after { content: '★'; position: absolute; left: 0; width: 50%; overflow: hidden; color: var(--star); }
 
-  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 100; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.3s; }
   .modal-bg.open { opacity: 1; pointer-events: all; }
-  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 40px; width: 100%; max-width: 420px; }
-  .modal h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 24px; }
-  .field { margin-bottom: 20px; }
-  .field label { display: block; font-weight: 600; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-  .field input { width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 12px 16px; border-radius: 10px; outline: none; font-family: 'Inter', sans-serif; }
-  .modal-actions { display: flex; gap: 12px; margin-top: 24px; }
-  .btn-ok { flex: 1; background: var(--accent); color: #0a0a0f; border: none; padding: 12px; font-weight: 600; border-radius: 10px; cursor: pointer; }
-  .btn-no { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 12px 20px; border-radius: 10px; cursor: pointer; }
-  
-  .placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.8rem; }
-  .spin { animation: spin 1s linear infinite; }
-  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 40px; width: 90%; max-width: 400px; }
+  .field input { width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 14px; border-radius: 12px; margin-top: 8px; outline: none; }
+  .modal-actions { display: flex; gap: 12px; margin-top: 30px; }
+  .btn-ok { flex: 1; background: var(--accent); color: var(--bg); border: none; padding: 14px; font-weight: 700; border-radius: 12px; cursor: pointer; }
+  .btn-no { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 14px; border-radius: 12px; cursor: pointer; }
+
+  .progress-bar-wrap { height: 2px; background: var(--border); margin-bottom: 20px; opacity: 0; transition: 0.3s; }
+  .progress-bar-wrap.visible { opacity: 1; }
+  .progress-bar { height: 100%; background: var(--accent); width: 0%; transition: 0.3s; }
 </style>
 </head>
 <body>
@@ -128,42 +120,41 @@
   <header>
     <div>
       <h1>Ma <span>Bibliothèque</span></h1>
-      <p class="subtitle">Animés · Mangas · Films</p>
+      <p class="subtitle">Collection Privée · Top 3 Sélectif</p>
     </div>
     <div class="header-right">
       <div class="tools">
-        <button class="tool-btn" onclick="exportData()">⬇ Exporter</button>
-        <button class="tool-btn" onclick="document.getElementById('importFile').click()">⬆ Importer</button>
+        <button class="tool-btn" onclick="exportData()">⬇ Export</button>
+        <button class="tool-btn" onclick="document.getElementById('importFile').click()">⬆ Import</button>
         <input type="file" id="importFile" style="display:none" onchange="importData(event)" accept=".json">
       </div>
       <div class="count" id="total">0</div>
-      <div class="count-label">Œuvres</div>
     </div>
   </header>
 
   <div class="topbar">
     <div class="search-wrap">
       <span class="search-icon">⌕</span>
-      <input type="text" id="search" placeholder="Rechercher une œuvre…">
+      <input type="text" id="search" placeholder="Rechercher...">
     </div>
+    <select id="sortSelect" onchange="render()">
+      <option value="id">Ordre : Plus récents</option>
+      <option value="rating">Ordre : Mieux notés</option>
+    </select>
     <button class="add-btn" id="openAdd">＋ Ajouter</button>
   </div>
 
-  <div class="progress-label" id="progressLabel"></div>
   <div class="progress-bar-wrap" id="progressWrap"><div class="progress-bar" id="progressBar"></div></div>
-
   <div class="grid" id="grid"></div>
 </div>
 
-<div class="modal-bg" id="addModal"><div class="modal"><h2>Ajouter une œuvre</h2><div class="field"><label>Titre</label><input type="text" id="newTitle" placeholder="Ex: Frieren"></div><div class="modal-actions"><button class="btn-no" id="cancelAdd">Annuler</button><button class="btn-ok" id="confirmAdd">Ajouter</button></div></div></div>
-<div class="modal-bg" id="photoModal"><div class="modal"><h2>Modifier la photo</h2><div class="field"><label>URL de l'image</label><input type="text" id="photoUrl" placeholder="https://…"></div><div style="text-align:center; color:var(--muted); font-size:0.7rem; margin:15px 0;">— ou —</div><button style="width:100%; background:transparent; border:1px solid var(--border); color:var(--muted); padding:12px; border-radius:10px; cursor:pointer;" onclick="document.getElementById('fileInput').click()">📁 Fichier local</button><input type="file" id="fileInput" style="display:none" accept="image/*"><div class="modal-actions"><button class="btn-no" id="cancelPhoto">Annuler</button><button class="btn-ok" id="confirmPhoto">Appliquer</button></div></div></div>
+<div class="modal-bg" id="addModal"><div class="modal"><h2>Nouvelle œuvre</h2><input type="text" id="newTitle" placeholder="Titre..."><div class="modal-actions"><button class="btn-no" onclick="closeM('addModal')">Annuler</button><button class="btn-ok" id="confirmAdd">Ajouter</button></div></div></div>
+<div class="modal-bg" id="photoModal"><div class="modal"><h2>Modifier l'image</h2><input type="text" id="photoUrl" placeholder="URL de l'image..."><div style="margin:15px 0; text-align:center; color:var(--muted)">— ou —</div><button class="btn-no" style="width:100%" onclick="document.getElementById('fileInput').click()">📁 Choisir un fichier</button><input type="file" id="fileInput" style="display:none" accept="image/*"><div class="modal-actions"><button class="btn-no" onclick="closeM('photoModal')">Annuler</button><button class="btn-ok" id="confirmPhoto">Appliquer</button></div></div></div>
 
 <script>
 const KEY = 'anime_lib_v4';
 let lib = [], nextId = 1, photoTarget = null, pendingFile = null;
-let fetchQueue = [], fetching = false, fetchedCount = 0, totalToFetch = 0;
-
-const MASTER = [["Inazuma Eleven", "Inazuma Eleven", "anime"], ["Assassination Classroom", "Assassination Classroom", "anime"], ["Hunter x Hunter", "Hunter x Hunter", "anime"], ["The Seven Deadly Sins", "Nanatsu no Taizai", "anime"], ["Kuroko's Basket", "Kuroko no Basket", "anime"], ["Demon Slayer", "Kimetsu no Yaiba", "anime"], ["Sword Art Online", "Sword Art Online", "anime"], ["Tokyo Ghoul", "Tokyo Ghoul", "anime"], ["Fire Force", "Enen no Shouboutai", "anime"], ["Attack On Titans", "Shingeki no Kyojin", "anime"], ["Death Note", "Death Note", "anime"], ["Food Wars", "Shokugeki no Souma", "anime"], ["Dr Stone", "Dr. Stone", "anime"], ["Akame Ga Kill", "Akame ga Kill", "anime"], ["The Promised Neverland", "Yakusoku no Neverland", "anime"], ["Haikyū!!", "Haikyuu!!", "anime"], ["Code Geass", "Code Geass", "anime"], ["My Hero Academia", "Boku no Hero Academia", "anime"], ["Erased", "Boku dake ga Inai Machi", "anime"], ["Made In Abyss", "Made in Abyss", "anime"], ["Re:Zero", "Re:Zero kara Hajimeru Isekai Seikatsu", "anime"], ["Naruto", "Naruto", "anime"], ["Vinland Saga", "Vinland Saga", "anime"], ["Parasite", "Kiseijuu: Sei no Kakuritsu", "anime"], ["One-Punch Man", "One Punch Man", "anime"], ["Tower of God", "Tower of God", "anime"], ["Yuri On Ice", "Yuri on Ice", "anime"], ["Your Lie In April", "Shigatsu wa Kimi no Uso", "anime"], ["Fullmetal Alchemist: Brotherhood", "Fullmetal Alchemist Brotherhood", "anime"], ["Mirai Nikki", "Mirai Nikki", "anime"], ["God Of Highschool", "The God of High School", "anime"], ["Black Clover", "Black Clover", "anime"], ["One Piece", "One Piece", "anime"], ["Violet Evergarden", "Violet Evergarden", "anime"], ["Jujutsu Kaisen", "Jujutsu Kaisen", "anime"], ["Noblesse", "Noblesse", "anime"], ["Dororo", "Dororo", "anime"], ["Darwin's Game", "Darwin's Game", "anime"], ["Another", "Another", "anime"], ["The Rising of the Shield Hero", "Tate no Yuusha no Nariagari", "anime"], ["Kemono Jihen", "Kemono Jihen", "anime"], ["Bleach", "Bleach", "anime"], ["B: The Beginning", "B The Beginning", "anime"], ["No Game, No Life", "No Game No Life", "anime"], ["Mushoku Tensei", "Mushoku Tensei", "anime"], ["Akudama Drive", "Akudama Drive", "anime"], ["Spy X Family", "Spy x Family", "manga"], ["Tokyo Revengers", "Tokyo Revengers", "manga"], ["Chainsaw Man", "Chainsaw Man", "manga"], ["Anonyme !", "Ano Ko ni Kiss to Shirayuri wo", "manga"], ["Kingdom", "Kingdom", "manga"], ["Ajin", "Ajin", "manga"], ["Solo Leveling", "Solo Leveling", "anime"], ["Death Note Short Stories", "Death Note", "manga"], ["Blue Lock", "Blue Lock", "manga"], ["Ao Ashi", "Ao Ashi", "manga"], ["Route End", "Route End", "manga"], ["A Silent Voice", "Koe no Katachi", "manga"], ["Rainbow", "Rainbow: Nisha Rokubou no Shichinin", "manga"], ["Beastars", "Beastars", "anime"], ["Ikigami", "Ikigami", "manga"], ["Sky-High Survival", "Tengoku Daimakyou", "anime"], ["Gambling School", "Kakegurui", "anime"], ["Princesse Mononoké", "Mononoke Hime", "anime"], ["Bâtard", "Bastard Heavy Metal Dark Fantasy", "manga"], ["Half & Half", "Half & Half", "manga"], ["20th Century Boys", "20th Century Boys", "manga"], ["La Déchéance d'un Homme", "Ningen Shikkaku", "manga"], ["Zom 100: Bucket List of the Dead","Zom 100 Zombie ni Naru made ni Shitai", "anime"], ["Kaiju n°8", "Kaiju No. 8", "manga"], ["Berserk", "Berserk", "manga"], ["I Want to Eat Your Pancreas", "Kimi no Suizou wo Tabetai", "anime"], ["Run with the Wind", "Kaze ga Tsuyoku Fuiteiru", "anime"], ["Your Name.", "Kimi no Na wa", "anime"], ["Blue Period", "Blue Period", "anime"], ["Arcane", "Arcane", "anime"], ["Ousama Ranking", "Ousama Ranking", "anime"], ["Gleipnir", "Gleipnir", "anime"], ["Noragami", "Noragami", "anime"], ["Kaiji", "Kaiji", "anime"], ["Oshi no Ko", "Oshi no Ko", "anime"], ["Komi cherche ses mots", "Komi-san wa Comyushou desu", "anime"], ["Tomodachi Game", "Tomodachi Game", "anime"], ["Time Shadows", "Shadows House", "anime"], ["Look Back", "Look Back", "manga"], ["Classroom Of The Elite", "Youkoso Jitsuryoku Shijou Shugi no Kyoushitsu e", "anime"], ["Devilman Crybaby", "Devilman Crybaby", "anime"], ["Mahouka Koukou no Rettousei", "Mahouka Koukou no Rettousei", "anime"], ["Lycoris Recoil", "Lycoris Recoil", "anime"], ["Masamune-Kun's Revenge", "Masamune-kun no Revenge", "anime"], ["Gachiakuta", "Gachiakuta", "manga"], ["Call of the Night", "Yofukashi no Uta", "manga"], ["Léviathan", "Leviathan", "manga"], ["ID: INVADED", "ID Invaded", "anime"], ["Btooom!", "Btooom", "anime"], ["Blue Box", "Ao no Hako", "manga"], ["Hell's Paradise", "Jigokuraku", "anime"], ["Mashle", "Mashle Magic and Muscles", "anime"], ["My Home Hero", "My Home Hero", "anime"], ["Cyberpunk: Edgerunners", "Cyberpunk Edgerunners", "anime"], ["Dead Mount Death Play", "Dead Mount Death Play", "anime"], ["Le Voyage de Chihiro", "Sen to Chihiro no Kamikakushi", "anime"], ["Bubble", "Bubble", "anime"], ["ReLIFE", "ReLIFE", "anime"], ["Death Parade", "Death Parade", "anime"], ["Lookism", "Lookism", "anime"], ["Overtake!", "Overtake", "anime"], ["Ron Kamonohashi", "Ron Kamonohashi Deranged Detective", "anime"], ["Wind Breaker", "Wind Breaker", "anime"], ["Undead Girl Murder Face", "Undead Girl Murder Farce", "anime"], ["91 Days", "91 Days", "anime"], ["Ninja Kamui", "Ninja Kamui", "anime"], ["Wistoria: Wand and Sword", "Wistoria Wand and Sword", "anime"], ["How to Become Ordinary", "Futsuu no Joshikousei ga Locodol Yatte Mita", "anime"], ["Link Click", "Shiguang Daili Ren", "anime"], ["Viral Hit", "Viral Hit", "anime"], ["Roshidere", "Roshidere", "anime"], ["86: Eighty Six", "86 Eighty Six", "anime"], ["DAN DA DAN", "Dandadan", "anime"], ["Du mouvement de la Terre", "Chikyuu no Undou ni Tsuite", "anime"], ["Great Pretender", "Great Pretender", "anime"], ["Sword of the Demon Hunter", "Kijin Gentoushou", "anime"], ["Monster", "Monster", "anime"], ["Takopi No Genzai", "Takopi no Genzai", "anime"], ["Frieren", "Sousou no Frieren", "anime"], ["Sentenced to Be a Hero", "Eiyuu Kyoushitsu", "anime"], ["Zankyou no Terror", "Zankyou no Terror", "anime"]];
+let fetchQueue = [], fetching = false;
 
 function save() { localStorage.setItem(KEY, JSON.stringify({ lib, nextId })); }
 
@@ -171,113 +162,130 @@ function load() {
   const s = localStorage.getItem(KEY);
   if (s) { 
     const d = JSON.parse(s); lib = d.lib; nextId = d.nextId; 
+    // Correction automatique titre
     let f = lib.find(i => i.title === "FMAB"); if(f) { f.title = "Fullmetal Alchemist: Brotherhood"; save(); }
   } else {
-    lib = MASTER.map((m, i) => ({ id: i + 1, title: m[0], query: m[1], type: m[2], image: null, rating: 0 }));
-    nextId = lib.length + 1;
+    // Initialisation si vide (on peut mettre MASTER ici si besoin)
+    lib = [];
   }
-}
-
-async function fetchCover(q, t) {
-  const url = `https://api.jikan.moe/v4/${t === 'manga' ? 'manga' : 'anime'}?q=${encodeURIComponent(q)}&limit=1`;
-  try { const res = await fetch(url); if(!res.ok) return null; const d = await res.json(); return d.data?.[0]?.images?.jpg?.large_image_url || d.data?.[0]?.images?.jpg?.image_url; } catch(e) { return null; }
-}
-
-async function processQueue() {
-  if (fetching || !fetchQueue.length) return;
-  fetching = true;
-  document.getElementById('progressWrap').classList.add('visible');
-  while (fetchQueue.length > 0) {
-    const item = fetchQueue.shift();
-    document.getElementById('progressLabel').textContent = `Mise à jour... ${fetchedCount + 1}/${totalToFetch}`;
-    const img = await fetchCover(item.query, item.type);
-    if (img) { item.image = img; save(); updateCardImage(item.id, img); }
-    fetchedCount++;
-    document.getElementById('progressBar').style.width = (fetchedCount / totalToFetch * 100) + '%';
-    await new Promise(r => setTimeout(r, 450));
-  }
-  document.getElementById('progressLabel').textContent = `✓ À jour`;
-  setTimeout(() => { document.getElementById('progressWrap').classList.remove('visible'); document.getElementById('progressLabel').textContent = ''; }, 2000);
-  fetching = false;
-}
-
-function updateCardImage(id, src) {
-  const c = document.querySelector(`.card[data-id="${id}"] .card-img`);
-  if (c) c.innerHTML = `<img src="${src}" alt=""><div class="card-overlay"><button class="ov-btn photo" onclick="openPhoto(${id})">✎</button><button class="ov-btn del" onclick="del(${id})">✕</button></div>`;
 }
 
 function setRating(id, val, event) {
   event.stopPropagation();
   const rect = event.target.getBoundingClientRect();
-  const x = event.clientX - rect.left;
-  const finalVal = val - (x < rect.width / 2 ? 0.5 : 0);
-  const item = lib.find(i => i.id === id);
-  if(item) { item.rating = (item.rating === finalVal) ? 0 : finalVal; save(); render(); }
+  const finalVal = val - ((event.clientX - rect.left) < rect.width / 2 ? 0.5 : 0);
+  const itm = lib.find(i => i.id === id);
+  if(itm) { itm.rating = (itm.rating === finalVal) ? 0 : finalVal; save(); updateCardRatingUI(id); }
+}
+
+function setMedal(id, rank) {
+  // On enlève cette médaille de quiconque l'aurait déjà
+  lib.forEach(item => { if(item.rank === rank) item.rank = 0; });
+  // On l'attribue à la nouvelle œuvre (ou on l'enlève si déjà cliqué)
+  const itm = lib.find(i => i.id === id);
+  if(itm) itm.rank = (itm.rank === rank) ? 0 : rank;
+  save();
+  render(); // On re-render tout car les bordures et médailles changent d'endroit
+}
+
+function updateCardRatingUI(id) {
+  const itm = lib.find(i => i.id === id);
+  const container = document.querySelector(`.card[data-id="${id}"] .stars`);
+  if(!itm || !container) return;
+  let html = '';
+  for(let i=1; i<=5; i++) {
+    let cls = itm.rating >= i ? 'full' : (itm.rating === i-0.5 ? 'half' : '');
+    html += `<span class="star ${cls}" onclick="setRating(${itm.id}, ${i}, event)">★</span>`;
+  }
+  container.innerHTML = html;
 }
 
 function render() {
-  const q = document.getElementById('search').value.toLowerCase();
-  const list = q ? lib.filter(i => i.title.toLowerCase().includes(q)) : lib;
+  const searchQ = document.getElementById('search').value.toLowerCase();
+  const sortBy = document.getElementById('sortSelect').value;
+  
+  let list = [...lib];
+  if(searchQ) list = list.filter(i => i.title.toLowerCase().includes(searchQ));
+  
+  // Tri
+  list.sort((a, b) => {
+    if(sortBy === 'rating') return (b.rating || 0) - (a.rating || 0);
+    return b.id - a.id;
+  });
+
   document.getElementById('total').textContent = lib.length;
   const grid = document.getElementById('grid');
   grid.innerHTML = '';
-  fetchQueue = []; fetchedCount = 0;
-  list.forEach((item, idx) => {
+  
+  list.forEach(item => {
     const card = document.createElement('div');
-    card.className = 'card'; card.dataset.id = item.id;
-    card.style.animationDelay = (idx * 0.02) + 's';
+    card.className = `card ${item.rank ? 'rank-'+item.rank : ''}`;
+    card.dataset.id = item.id;
     
+    let medalIcon = item.rank === 1 ? '🥇' : item.rank === 2 ? '🥈' : item.rank === 3 ? '🥉' : '';
     let starsHtml = '';
     for(let i=1; i<=5; i++) {
-      let cls = item.rating >= i ? 'full' : (item.rating === i-0.5 ? 'half' : '');
+      let cls = (item.rating || 0) >= i ? 'full' : ((item.rating || 0) === i-0.5 ? 'half' : '');
       starsHtml += `<span class="star ${cls}" onclick="setRating(${item.id}, ${i}, event)">★</span>`;
     }
 
-    const imgPart = item.image ? `<img src="${item.image}">` : `<div class="placeholder"><span class="spin">◌</span></div>`;
-    card.innerHTML = `<div class="card-img">${imgPart}<div class="card-overlay"><button class="ov-btn photo" onclick="openPhoto(${item.id})">✎</button><button class="ov-btn del" onclick="del(${item.id})">✕</button></div></div>
-      <div class="card-info"><div class="card-title">${item.title}</div><div class="stars">${starsHtml}</div></div>`;
+    card.innerHTML = `
+      ${item.rank ? `<div class="medal-badge">${medalIcon}</div>` : ''}
+      <div class="card-img">
+        ${item.image ? `<img src="${item.image}">` : `<div class="placeholder"><span class="spin">◌</span></div>`}
+        <div class="card-overlay">
+          <div class="actions-row">
+            <button class="ov-btn photo" onclick="openP(${item.id})">✎</button>
+            <button class="ov-btn del" onclick="del(${item.id})">✕</button>
+          </div>
+          <div class="medal-row">
+            <button class="ov-btn ${item.rank===1?'active-gold':''}" onclick="setMedal(${item.id}, 1)">🥇</button>
+            <button class="ov-btn ${item.rank===2?'active-silver':''}" onclick="setMedal(${item.id}, 2)">🥈</button>
+            <button class="ov-btn ${item.rank===3?'active-bronze':''}" onclick="setMedal(${item.id}, 3)">🥉</button>
+          </div>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">${item.title}</div>
+        <div class="stars">${starsHtml}</div>
+      </div>
+    `;
     grid.appendChild(card);
-    if(!item.image) fetchQueue.push(item);
   });
-  totalToFetch = fetchQueue.length;
-  processQueue();
 }
 
-// Actions
+// Utilitaires
 function del(id) { if(confirm("Supprimer ?")) { lib = lib.filter(i => i.id !== id); save(); render(); } }
-function openPhoto(id) { photoTarget = id; document.getElementById('photoModal').classList.add('open'); }
+function openP(id) { photoTarget = id; document.getElementById('photoModal').classList.add('open'); }
+function closeM(id) { document.getElementById(id).classList.remove('open'); }
+
 function exportData() {
   const blob = new Blob([JSON.stringify({lib, nextId})], {type: 'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = 'ma_bibliotheque.json'; a.click();
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'biblio_save.json'; a.click();
 }
 function importData(e) {
-  const file = e.target.files[0]; if(!file) return;
   const reader = new FileReader();
   reader.onload = (ev) => { const d = JSON.parse(ev.target.result); lib = d.lib; nextId = d.nextId; save(); render(); };
-  reader.readAsText(file);
+  reader.readAsText(e.target.files[0]);
 }
 
 document.getElementById('confirmAdd').onclick = () => {
   const t = document.getElementById('newTitle').value.trim();
-  if(t) { lib.push({id: nextId++, title: t, query: t, type: 'anime', image: null, rating: 0}); save(); render(); document.getElementById('addModal').classList.remove('open'); }
+  if(t) { lib.push({id: nextId++, title: t, query: t, image: null, rating: 0, rank: 0}); save(); render(); closeM('addModal'); }
 };
-document.getElementById('confirmPhoto').onclick = () => {
-  const url = document.getElementById('photoUrl').value.trim();
-  const src = pendingFile || url;
-  if(src) { const itm = lib.find(i => i.id === photoTarget); itm.image = src; save(); render(); }
-  document.getElementById('photoModal').classList.remove('open');
-  pendingFile = null;
-};
+
 document.getElementById('fileInput').onchange = e => {
-  const f = e.target.files[0]; const r = new FileReader();
-  r.onload = ev => { pendingFile = ev.target.result; document.getElementById('photoUrl').value = "Fichier prêt..."; };
-  r.readAsDataURL(f);
+  const r = new FileReader(); r.onload = ev => { pendingFile = ev.target.result; document.getElementById('photoUrl').value = "Image chargée !"; };
+  r.readAsDataURL(e.target.files[0]);
+};
+
+document.getElementById('confirmPhoto').onclick = () => {
+  const itm = lib.find(i => i.id === photoTarget);
+  if(itm) { itm.image = pendingFile || document.getElementById('photoUrl').value.trim(); save(); render(); }
+  closeM('photoModal'); pendingFile = null;
 };
 
 document.getElementById('openAdd').onclick = () => document.getElementById('addModal').classList.add('open');
-document.getElementById('cancelAdd').onclick = () => document.getElementById('addModal').classList.remove('open');
-document.getElementById('cancelPhoto').onclick = () => document.getElementById('photoModal').classList.remove('open');
 document.getElementById('search').oninput = render;
 
 load(); render();

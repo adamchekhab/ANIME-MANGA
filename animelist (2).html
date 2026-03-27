@@ -17,419 +17,125 @@
     --text: #e8e6e0;
     --muted: #6b6a72;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    min-height: 100vh;
-  }
-
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 300; min-height: 100vh; }
   body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 60% 40% at 80% 20%, rgba(232,201,126,0.04) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(100,80,160,0.04) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
+    content: ''; position: fixed; inset: 0;
+    background: radial-gradient(ellipse 60% 40% at 80% 20%, rgba(232,201,126,0.04) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 60% at 20% 80%, rgba(100,80,160,0.04) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
   }
-
-  .container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 32px;
-    position: relative;
-    z-index: 1;
-  }
-
+  .container { max-width: 1400px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
   header {
-    padding: 60px 0 40px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 48px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 24px;
-    flex-wrap: wrap;
+    padding: 60px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 48px;
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap;
   }
-
-  h1 {
-    font-family: 'Shippori Mincho', serif;
-    font-size: clamp(2rem, 4vw, 3.2rem);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-  }
-
+  h1 { font-family: 'Shippori Mincho', serif; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
   h1 span { color: var(--accent); }
-
-  .subtitle {
-    margin-top: 8px;
-    color: var(--muted);
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .header-right { text-align: right; }
-
-  .count {
-    font-family: 'Shippori Mincho', serif;
-    font-size: 2.2rem;
-    font-weight: 600;
-    color: var(--accent);
-    line-height: 1;
-  }
-
-  .count-label {
-    font-size: 0.72rem;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-top: 4px;
-  }
-
-  /* Top bar */
-  .topbar {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    margin-bottom: 16px;
-  }
-
-  .search-wrap {
-    flex: 1;
-    position: relative;
-  }
-
+  .subtitle { margin-top: 8px; color: var(--muted); font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .count { font-family: 'Shippori Mincho', serif; font-size: 2.2rem; font-weight: 600; color: var(--accent); line-height: 1; text-align: right; }
+  .count-label { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; text-align: right; }
+  .topbar { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; }
+  .search-wrap { flex: 1; position: relative; }
   .search-wrap input {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 11px 16px 11px 42px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.875rem;
-    font-weight: 300;
-    border-radius: 8px;
-    outline: none;
-    transition: border-color 0.2s;
+    width: 100%; background: var(--surface); border: 1px solid var(--border); color: var(--text);
+    padding: 11px 16px 11px 42px; font-family: 'DM Sans', sans-serif; font-size: 0.875rem;
+    font-weight: 300; border-radius: 8px; outline: none; transition: border-color 0.2s;
   }
-
   .search-wrap input:focus { border-color: rgba(232,201,126,0.3); }
   .search-wrap input::placeholder { color: var(--muted); }
-
-  .search-icon {
-    position: absolute;
-    left: 15px; top: 50%;
-    transform: translateY(-50%);
-    color: var(--muted);
-    font-size: 1rem;
-    pointer-events: none;
-  }
-
+  .search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 1rem; pointer-events: none; }
   .add-btn {
-    background: transparent;
-    border: 1px solid rgba(232,201,126,0.4);
-    color: var(--accent);
-    padding: 10px 20px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.85rem;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
+    background: transparent; border: 1px solid rgba(232,201,126,0.4); color: var(--accent);
+    padding: 10px 20px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+    border-radius: 8px; cursor: pointer; transition: all 0.2s; white-space: nowrap;
   }
-
   .add-btn:hover { background: rgba(232,201,126,0.08); }
-
-  /* Progress bar */
-  .progress-bar-wrap {
-    height: 2px;
-    background: var(--border);
-    border-radius: 2px;
-    margin-bottom: 32px;
-    overflow: hidden;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
+  .progress-label { font-size: 0.75rem; color: var(--muted); margin-bottom: 8px; letter-spacing: 0.05em; min-height: 18px; }
+  .progress-bar-wrap { height: 2px; background: var(--border); border-radius: 2px; margin-bottom: 32px; overflow: hidden; opacity: 0; transition: opacity 0.3s; }
   .progress-bar-wrap.visible { opacity: 1; }
-
-  .progress-bar {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 2px;
-    transition: width 0.3s ease;
-    width: 0%;
-  }
-
-  .progress-label {
-    font-size: 0.75rem;
-    color: var(--muted);
-    margin-bottom: 8px;
-    letter-spacing: 0.05em;
-    min-height: 18px;
-  }
-
-  /* GRID */
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
-    gap: 14px;
-    padding-bottom: 80px;
-  }
-
-  /* CARD */
+  .progress-bar { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease; width: 0%; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 14px; padding-bottom: 80px; }
   .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    overflow: hidden; transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
     animation: fadeIn 0.3s ease both;
   }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .card:hover {
-    transform: translateY(-3px);
-    border-color: rgba(232,201,126,0.18);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.4);
-  }
-
-  .card-img {
-    width: 100%;
-    aspect-ratio: 3/4;
-    position: relative;
-    overflow: hidden;
-    background: var(--surface2);
-  }
-
-  .card-img img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.4s ease;
-  }
-
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .card:hover { transform: translateY(-3px); border-color: rgba(232,201,126,0.18); box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
+  .card-img { width: 100%; aspect-ratio: 3/4; position: relative; overflow: hidden; background: var(--surface2); }
+  .card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
   .card:hover .card-img img { transform: scale(1.04); }
-
   .placeholder {
     width: 100%; height: 100%;
     background: linear-gradient(135deg, var(--surface2) 0%, #12121c 100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    color: var(--muted);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
   }
-
-  .placeholder .spin {
-    font-size: 1.4rem;
-    opacity: 0.4;
-    animation: spin 1.5s linear infinite;
-  }
-
-  .placeholder.loaded .spin { display: none; }
-
-  .placeholder .ph-icon {
-    font-size: 1.6rem;
-    opacity: 0.25;
-    display: none;
-  }
-
-  .placeholder.no-image .ph-icon { display: block; }
+  .spin { font-size: 1.4rem; color: var(--muted); opacity: 0.4; animation: spin 1.5s linear infinite; }
+  .ph-icon { font-size: 1.6rem; color: var(--muted); opacity: 0.25; display: none; }
+  .ph-text { font-size: 0.68rem; color: var(--muted); opacity: 0.5; letter-spacing: 0.04em; display: none; }
   .placeholder.no-image .spin { display: none; }
-
-  .placeholder .ph-text {
-    font-size: 0.68rem;
-    color: var(--muted);
-    opacity: 0.5;
-    letter-spacing: 0.04em;
-    display: none;
-  }
-
+  .placeholder.no-image .ph-icon { display: block; }
   .placeholder.no-image .ph-text { display: block; }
-
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
-  }
-
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
   .card-overlay {
-    position: absolute; inset: 0;
-    background: rgba(10,10,15,0.82);
-    display: flex; align-items: center; justify-content: center;
-    gap: 12px;
-    opacity: 0;
-    transition: opacity 0.2s;
+    position: absolute; inset: 0; background: rgba(10,10,15,0.82);
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    opacity: 0; transition: opacity 0.2s;
   }
-
   .card:hover .card-overlay { opacity: 1; }
-
   .ov-btn {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.12);
-    background: rgba(255,255,255,0.05);
-    color: var(--text);
-    font-size: 0.85rem;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.15s;
-    backdrop-filter: blur(4px);
+    width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.05); color: var(--text); font-size: 0.85rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: all 0.15s; backdrop-filter: blur(4px);
   }
-
   .ov-btn.photo:hover { background: rgba(232,201,126,0.15); border-color: rgba(232,201,126,0.4); color: var(--accent); }
   .ov-btn.del:hover   { background: rgba(220,60,60,0.2); border-color: rgba(220,60,60,0.4); color: #f87171; }
-
   .card-info { padding: 11px 12px; }
-
-  .card-title {
-    font-family: 'Shippori Mincho', serif;
-    font-size: 0.88rem;
-    font-weight: 600;
-    line-height: 1.35;
-  }
-
-  /* MODALS */
+  .card-title { font-family: 'Shippori Mincho', serif; font-size: 0.88rem; font-weight: 600; line-height: 1.35; }
   .modal-bg {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.72);
-    backdrop-filter: blur(6px);
-    z-index: 100;
-    display: flex; align-items: center; justify-content: center;
-    padding: 20px;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.2s;
+    position: fixed; inset: 0; background: rgba(0,0,0,0.72); backdrop-filter: blur(6px);
+    z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s;
   }
-
   .modal-bg.open { opacity: 1; pointer-events: all; }
-
-  .modal {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 32px;
-    width: 100%; max-width: 400px;
-    transform: translateY(10px);
-    transition: transform 0.2s;
-  }
-
+  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 32px; width: 100%; max-width: 400px; transform: translateY(10px); transition: transform 0.2s; }
   .modal-bg.open .modal { transform: translateY(0); }
-
-  .modal h2 {
-    font-family: 'Shippori Mincho', serif;
-    font-size: 1.25rem; font-weight: 700;
-    margin-bottom: 22px;
-  }
-
+  .modal h2 { font-family: 'Shippori Mincho', serif; font-size: 1.25rem; font-weight: 700; margin-bottom: 22px; }
   .field { margin-bottom: 14px; }
-
-  .field label {
-    display: block;
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 7px;
-  }
-
+  .field label { display: block; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; }
   .field input {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 10px 14px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.875rem; font-weight: 300;
-    border-radius: 8px; outline: none;
-    transition: border-color 0.2s;
+    width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+    padding: 10px 14px; font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 300;
+    border-radius: 8px; outline: none; transition: border-color 0.2s;
   }
-
   .field input:focus { border-color: rgba(232,201,126,0.3); }
-
   .modal-actions { display: flex; gap: 10px; margin-top: 22px; }
-
-  .btn-ok {
-    flex: 1;
-    background: var(--accent); color: #0a0a0f;
-    border: none; padding: 11px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.875rem; font-weight: 500;
-    border-radius: 8px; cursor: pointer;
-    transition: background 0.2s;
-  }
-
+  .btn-ok { flex: 1; background: var(--accent); color: #0a0a0f; border: none; padding: 11px; font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 500; border-radius: 8px; cursor: pointer; transition: background 0.2s; }
   .btn-ok:hover { background: var(--accent2); }
-
-  .btn-no {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    padding: 11px 18px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.875rem;
-    border-radius: 8px; cursor: pointer;
-    transition: all 0.2s;
-  }
-
+  .btn-no { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 11px 18px; font-family: 'DM Sans', sans-serif; font-size: 0.875rem; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
   .btn-no:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
-
   .or-sep { text-align: center; color: var(--muted); font-size: 0.78rem; margin: 10px 0; }
-
-  .file-btn {
-    width: 100%;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    padding: 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
-    border-radius: 8px; cursor: pointer;
-    transition: all 0.2s;
-  }
-
+  .file-btn { width: 100%; background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
   .file-btn:hover { border-color: rgba(232,201,126,0.3); color: var(--text); }
-
   #fileInput { display: none; }
-
-  .empty {
-    grid-column: 1/-1;
-    text-align: center;
-    padding: 80px 20px;
-    color: var(--muted);
-    font-size: 0.875rem;
-  }
-
+  .empty { grid-column: 1/-1; text-align: center; padding: 80px 20px; color: var(--muted); font-size: 0.875rem; }
   ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 3px; }
 </style>
 </head>
 <body>
-
 <div class="container">
   <header>
     <div>
       <h1>Ma <span>Bibliothèque</span></h1>
       <p class="subtitle">Animés · Mangas · Films</p>
     </div>
-    <div class="header-right">
+    <div>
       <div class="count" id="total">0</div>
       <div class="count-label">Œuvres</div>
     </div>
   </header>
-
   <div class="topbar">
     <div class="search-wrap">
       <span class="search-icon">⌕</span>
@@ -437,12 +143,10 @@
     </div>
     <button class="add-btn" id="openAdd">＋ Ajouter</button>
   </div>
-
   <div class="progress-label" id="progressLabel"></div>
   <div class="progress-bar-wrap" id="progressWrap">
     <div class="progress-bar" id="progressBar"></div>
   </div>
-
   <div class="grid" id="grid"></div>
 </div>
 
@@ -450,10 +154,7 @@
 <div class="modal-bg" id="addModal">
   <div class="modal">
     <h2>Ajouter une œuvre</h2>
-    <div class="field">
-      <label>Titre</label>
-      <input type="text" id="newTitle" placeholder="Ex: Frieren">
-    </div>
+    <div class="field"><label>Titre</label><input type="text" id="newTitle" placeholder="Ex: Frieren"></div>
     <div class="modal-actions">
       <button class="btn-no" id="cancelAdd">Annuler</button>
       <button class="btn-ok" id="confirmAdd">Ajouter</button>
@@ -465,10 +166,7 @@
 <div class="modal-bg" id="photoModal">
   <div class="modal">
     <h2>Modifier la photo</h2>
-    <div class="field">
-      <label>URL de l'image</label>
-      <input type="text" id="photoUrl" placeholder="https://…">
-    </div>
+    <div class="field"><label>URL de l'image</label><input type="text" id="photoUrl" placeholder="https://…"></div>
     <div class="or-sep">— ou —</div>
     <button class="file-btn" id="triggerFile">📁 Choisir un fichier local</button>
     <input type="file" id="fileInput" accept="image/*">
@@ -480,57 +178,137 @@
 </div>
 
 <script>
-const KEY = 'anime_lib_v3';
+const KEY = 'anime_lib_v4';
 
-const TITLES = [
-  "Inazuma Eleven","Assassination Classroom","Hunter x Hunter","The Seven Deadly Sins",
-  "Kuroko's Basketball","Demon Slayer","Sword Art Online","Tokyo Ghoul","Fire Force",
-  "Attack on Titan","Death Note","Food Wars","Dr. Stone","Akame ga Kill",
-  "The Promised Neverland","Haikyuu","Code Geass","My Hero Academia","Erased",
-  "Made in Abyss","Re:Zero","Naruto","Vinland Saga","Parasyte","One Punch Man",
-  "Tower of God","Yuri on Ice","Your Lie in April","Fullmetal Alchemist Brotherhood",
-  "Mirai Nikki","God of High School","Black Clover","One Piece","Violet Evergarden",
-  "Jujutsu Kaisen","Noblesse","Dororo","Darwin's Game","Another",
-  "The Rising of the Shield Hero","Kemono Jihen","Bleach","B The Beginning",
-  "No Game No Life","Mushoku Tensei","Akudama Drive","Spy x Family","Tokyo Revengers",
-  "Chainsaw Man","Kingdom","Ajin","Solo Leveling","Blue Lock","Ao Ashi",
-  "A Silent Voice","Beastars","Sky High Survival","Kakegurui","Princess Mononoke",
-  "Zom 100 Bucket List of the Dead","Kaiju No 8","Berserk","I Want to Eat Your Pancreas",
-  "Run with the Wind","Your Name","Blue Period","Arcane","Ousama Ranking","Gleipnir",
-  "Noragami","Kaiji","Oshi no Ko","Komi Can't Communicate","Tomodachi Game",
-  "Classroom of the Elite","Devilman Crybaby","Mahouka Koukou no Rettousei",
-  "Lycoris Recoil","Masamune-kun's Revenge","ID Invaded","Btooom",
-  "Hell's Paradise","Mashle","My Home Hero","Cyberpunk Edgerunners",
-  "Dead Mount Death Play","Spirited Away","ReLIFE","Death Parade","Lookism",
-  "Ron Kamonohashi","Wind Breaker","91 Days","Ninja Kamui","Wistoria Wand and Sword",
-  "Link Click","86 Eighty Six","DAN DA DAN","Great Pretender","Monster","Frieren",
-  "Zankyou no Terror","Look Back","Call of the Night","Viral Hit"
-];
-
-// Friendly display names (parallel array)
-const DISPLAY = [
-  "Inazuma Eleven","Assassination Classroom","Hunter x Hunter","The Seven Deadly Sins",
-  "Kuroko's Basket","Demon Slayer","Sword Art Online","Tokyo Ghoul","Fire Force",
-  "Attack On Titans","Death Note","Food Wars","Dr Stone","Akame Ga Kill",
-  "The Promised Neverland","Haikyū!!","Code Geass","My Hero Academia","Erased",
-  "Made In Abyss","Re:Zero","Naruto","Vinland Saga","Parasite","One-Punch Man",
-  "Tower of God","Yuri On Ice","Your Lie In April","FMAB",
-  "Mirai Nikki","God Of Highschool","Black Clover","One Piece","Violet Evergarden",
-  "Jujutsu Kaisen","Noblesse","Dororo","Darwin's Game","Another",
-  "The Rising of the Shield Hero","Kemono Jihen","Bleach","B: The Beginning",
-  "No Game, No Life","Mushoku Tensei","Akudama Drive","Spy X Family","Tokyo Revengers",
-  "Chainsaw Man","Kingdom","Ajin","Solo Leveling","Blue Lock","Ao Ashi",
-  "A Silent Voice","Beastars","Sky-High Survival","Gambling School","Princesse Mononoké",
-  "Zom 100: Bucket List of the Dead","Kaiju n°8","Berserk","I Want to Eat Your Pancreas",
-  "Run with the Wind","Your Name.","Blue Period","Arcane","Ousama Ranking","Gleipnir",
-  "Noragami","Kaiji","Oshi no Ko","Komi cherche ses mots","Tomodachi Game",
-  "Classroom of the Elite","Devilman Crybaby","Mahouka Koukou no Rettousei",
-  "Lycoris Recoil","Masamune-Kun's Revenge","ID: INVADED","Btooom!",
-  "Hell's Paradise","Mashle","My Home Hero","Cyberpunk: Edgerunners",
-  "Dead Mount Death Play","Le Voyage de Chihiro","ReLIFE","Death Parade","Lookism",
-  "Ron Kamonohashi","Wind Breaker","91 Days","Ninja Kamui","Wistoria: Wand and Sword",
-  "Link Click","86: Eighty Six","DAN DA DAN","Great Pretender","Monster","Frieren",
-  "Zankyou no Terror","Look Back","Call of the Night","Viral Hit"
+// Each entry: [display title, search query for Jikan, type: 'anime'|'manga'|'both']
+const MASTER = [
+  ["Inazuma Eleven",                  "Inazuma Eleven",                        "anime"],
+  ["Assassination Classroom",         "Assassination Classroom",               "anime"],
+  ["Hunter x Hunter",                 "Hunter x Hunter",                       "anime"],
+  ["The Seven Deadly Sins",           "Nanatsu no Taizai",                     "anime"],
+  ["Kuroko's Basket",                 "Kuroko no Basket",                      "anime"],
+  ["Demon Slayer",                    "Kimetsu no Yaiba",                      "anime"],
+  ["Sword Art Online",                "Sword Art Online",                      "anime"],
+  ["Tokyo Ghoul",                     "Tokyo Ghoul",                           "anime"],
+  ["Fire Force",                      "Enen no Shouboutai",                    "anime"],
+  ["Attack On Titans",                "Shingeki no Kyojin",                    "anime"],
+  ["Death Note",                      "Death Note",                            "anime"],
+  ["Food Wars",                       "Shokugeki no Souma",                    "anime"],
+  ["Dr Stone",                        "Dr. Stone",                             "anime"],
+  ["Akame Ga Kill",                   "Akame ga Kill",                         "anime"],
+  ["The Promised Neverland",          "Yakusoku no Neverland",                 "anime"],
+  ["Haikyū!!",                        "Haikyuu!!",                             "anime"],
+  ["Code Geass",                      "Code Geass",                            "anime"],
+  ["My Hero Academia",                "Boku no Hero Academia",                 "anime"],
+  ["Erased",                          "Boku dake ga Inai Machi",               "anime"],
+  ["Made In Abyss",                   "Made in Abyss",                         "anime"],
+  ["Re:Zero",                         "Re:Zero kara Hajimeru Isekai Seikatsu", "anime"],
+  ["Naruto",                          "Naruto",                                "anime"],
+  ["Vinland Saga",                    "Vinland Saga",                          "anime"],
+  ["Parasite",                        "Kiseijuu: Sei no Kakuritsu",            "anime"],
+  ["One-Punch Man",                   "One Punch Man",                         "anime"],
+  ["Tower of God",                    "Tower of God",                          "anime"],
+  ["Yuri On Ice",                     "Yuri on Ice",                           "anime"],
+  ["Your Lie In April",               "Shigatsu wa Kimi no Uso",               "anime"],
+  ["FMAB",                            "Fullmetal Alchemist Brotherhood",        "anime"],
+  ["Mirai Nikki",                     "Mirai Nikki",                           "anime"],
+  ["God Of Highschool",               "The God of High School",                "anime"],
+  ["Black Clover",                    "Black Clover",                          "anime"],
+  ["One Piece",                       "One Piece",                             "anime"],
+  ["Violet Evergarden",               "Violet Evergarden",                     "anime"],
+  ["Jujutsu Kaisen",                  "Jujutsu Kaisen",                        "anime"],
+  ["Noblesse",                        "Noblesse",                              "anime"],
+  ["Dororo",                          "Dororo",                                "anime"],
+  ["Darwin's Game",                   "Darwin's Game",                         "anime"],
+  ["Another",                         "Another",                               "anime"],
+  ["The Rising of the Shield Hero",   "Tate no Yuusha no Nariagari",           "anime"],
+  ["Kemono Jihen",                    "Kemono Jihen",                          "anime"],
+  ["Bleach",                          "Bleach",                                "anime"],
+  ["B: The Beginning",                "B The Beginning",                       "anime"],
+  ["No Game, No Life",                "No Game No Life",                       "anime"],
+  ["Mushoku Tensei",                  "Mushoku Tensei",                        "anime"],
+  ["Akudama Drive",                   "Akudama Drive",                         "anime"],
+  ["Spy X Family",                    "Spy x Family",                          "manga"],
+  ["Tokyo Revengers",                 "Tokyo Revengers",                       "manga"],
+  ["Chainsaw Man",                    "Chainsaw Man",                          "manga"],
+  ["Anonyme !",                       "Ano Ko ni Kiss to Shirayuri wo",        "manga"],
+  ["Kingdom",                         "Kingdom",                               "manga"],
+  ["Ajin",                            "Ajin",                                  "manga"],
+  ["Solo Leveling",                   "Solo Leveling",                         "anime"],
+  ["Death Note Short Stories",        "Death Note",                            "manga"],
+  ["Blue Lock",                       "Blue Lock",                             "manga"],
+  ["Ao Ashi",                         "Ao Ashi",                               "manga"],
+  ["Route End",                       "Route End",                             "manga"],
+  ["A Silent Voice",                  "Koe no Katachi",                        "manga"],
+  ["Rainbow",                         "Rainbow: Nisha Rokubou no Shichinin",   "manga"],
+  ["Beastars",                        "Beastars",                              "anime"],
+  ["Ikigami",                         "Ikigami",                               "manga"],
+  ["Sky-High Survival",               "Tengoku Daimakyou",                     "anime"],
+  ["Gambling School",                 "Kakegurui",                             "anime"],
+  ["Princesse Mononoké",              "Mononoke Hime",                         "anime"],
+  ["Bâtard",                          "Bastard Heavy Metal Dark Fantasy",       "manga"],
+  ["Half & Half",                     "Half & Half",                           "manga"],
+  ["20th Century Boys",               "20th Century Boys",                     "manga"],
+  ["La Déchéance d'un Homme",         "Ningen Shikkaku",                       "manga"],
+  ["Zom 100: Bucket List of the Dead","Zom 100 Zombie ni Naru made ni Shitai", "anime"],
+  ["Kaiju n°8",                       "Kaiju No. 8",                           "manga"],
+  ["Berserk",                         "Berserk",                               "manga"],
+  ["I Want to Eat Your Pancreas",     "Kimi no Suizou wo Tabetai",             "anime"],
+  ["Run with the Wind",               "Kaze ga Tsuyoku Fuiteiru",              "anime"],
+  ["Your Name.",                      "Kimi no Na wa",                         "anime"],
+  ["Blue Period",                     "Blue Period",                           "anime"],
+  ["Arcane",                          "Arcane",                                "anime"],
+  ["Ousama Ranking",                  "Ousama Ranking",                        "anime"],
+  ["Gleipnir",                        "Gleipnir",                              "anime"],
+  ["Noragami",                        "Noragami",                              "anime"],
+  ["Kaiji",                           "Kaiji",                                 "anime"],
+  ["Oshi no Ko",                      "Oshi no Ko",                            "anime"],
+  ["Komi cherche ses mots",           "Komi-san wa Comyushou desu",            "anime"],
+  ["Tomodachi Game",                  "Tomodachi Game",                        "anime"],
+  ["Time Shadows",                    "Shadows House",                         "anime"],
+  ["Look Back",                       "Look Back",                             "manga"],
+  ["Classroom Of The Elite",          "Youkoso Jitsuryoku Shijou Shugi no Kyoushitsu e", "anime"],
+  ["Devilman Crybaby",                "Devilman Crybaby",                      "anime"],
+  ["Mahouka Koukou no Rettousei",     "Mahouka Koukou no Rettousei",           "anime"],
+  ["Lycoris Recoil",                  "Lycoris Recoil",                        "anime"],
+  ["Masamune-Kun's Revenge",          "Masamune-kun no Revenge",               "anime"],
+  ["Gachiakuta",                      "Gachiakuta",                            "manga"],
+  ["Call of the Night",               "Yofukashi no Uta",                      "manga"],
+  ["Léviathan",                       "Leviathan",                             "manga"],
+  ["ID: INVADED",                     "ID Invaded",                            "anime"],
+  ["Btooom!",                         "Btooom",                                "anime"],
+  ["Blue Box",                        "Ao no Hako",                            "manga"],
+  ["Hell's Paradise",                 "Jigokuraku",                            "anime"],
+  ["Mashle",                          "Mashle Magic and Muscles",              "anime"],
+  ["My Home Hero",                    "My Home Hero",                          "anime"],
+  ["Cyberpunk: Edgerunners",          "Cyberpunk Edgerunners",                 "anime"],
+  ["Dead Mount Death Play",           "Dead Mount Death Play",                 "anime"],
+  ["Le Voyage de Chihiro",            "Sen to Chihiro no Kamikakushi",         "anime"],
+  ["Bubble",                          "Bubble",                                "anime"],
+  ["ReLIFE",                          "ReLIFE",                                "anime"],
+  ["Death Parade",                    "Death Parade",                          "anime"],
+  ["Lookism",                         "Lookism",                               "anime"],
+  ["Overtake!",                       "Overtake",                              "anime"],
+  ["Ron Kamonohashi",                 "Ron Kamonohashi Deranged Detective",    "anime"],
+  ["Wind Breaker",                    "Wind Breaker",                          "anime"],
+  ["Undead Girl Murder Face",         "Undead Girl Murder Farce",              "anime"],
+  ["91 Days",                         "91 Days",                               "anime"],
+  ["Ninja Kamui",                     "Ninja Kamui",                           "anime"],
+  ["Wistoria: Wand and Sword",        "Wistoria Wand and Sword",               "anime"],
+  ["How to Become Ordinary",          "Futsuu no Joshikousei ga Locodol Yatte Mita", "anime"],
+  ["Link Click",                      "Shiguang Daili Ren",                    "anime"],
+  ["Viral Hit",                       "Viral Hit",                             "anime"],
+  ["Roshidere",                       "Roshidere",                             "anime"],
+  ["86: Eighty Six",                  "86 Eighty Six",                         "anime"],
+  ["DAN DA DAN",                      "Dandadan",                              "anime"],
+  ["Du mouvement de la Terre",        "Chikyuu no Undou ni Tsuite",            "anime"],
+  ["Great Pretender",                 "Great Pretender",                       "anime"],
+  ["Sword of the Demon Hunter",       "Kijin Gentoushou",                      "anime"],
+  ["Monster",                         "Monster",                               "anime"],
+  ["Takopi No Genzai",                "Takopi no Genzai",                      "anime"],
+  ["Frieren",                         "Sousou no Frieren",                     "anime"],
+  ["Sentenced to Be a Hero",          "Eiyuu Kyoushitsu",                      "anime"],
+  ["Zankyou no Terror",               "Zankyou no Terror",                     "anime"],
 ];
 
 let lib = [], nextId = 1, photoTarget = null, pendingFile = null;
@@ -541,93 +319,81 @@ function load() {
     const s = localStorage.getItem(KEY);
     if (s) { const d = JSON.parse(s); lib = d.lib; nextId = d.nextId; return; }
   } catch(e) {}
-  lib = TITLES.map((t, i) => ({ id: i+1, title: DISPLAY[i] || t, searchTitle: t, image: null }));
+  lib = MASTER.map((m, i) => ({
+    id: i + 1,
+    title: m[0],
+    query: m[1],
+    type: m[2],
+    image: null
+  }));
   nextId = lib.length + 1;
 }
 
 function save() { localStorage.setItem(KEY, JSON.stringify({ lib, nextId })); }
 
-// ---- JIKAN API ----
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-async function fetchCover(searchTitle) {
-  try {
-    const url = `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(searchTitle)}&limit=1`;
-    const res = await fetch(url);
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data.data?.[0]?.images?.jpg?.large_image_url || data.data?.[0]?.images?.jpg?.image_url || null;
-  } catch(e) { return null; }
-}
+async function fetchCover(query, type) {
+  const endpoints = type === 'manga'
+    ? [`https://api.jikan.moe/v4/manga?q=${encodeURIComponent(query)}&limit=1`,
+       `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(query)}&limit=1`]
+    : [`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(query)}&limit=1`,
+       `https://api.jikan.moe/v4/manga?q=${encodeURIComponent(query)}&limit=1`];
 
-async function fetchMangaCover(searchTitle) {
-  try {
-    const url = `https://api.jikan.moe/v4/manga?q=${encodeURIComponent(searchTitle)}&limit=1`;
-    const res = await fetch(url);
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data.data?.[0]?.images?.jpg?.large_image_url || data.data?.[0]?.images?.jpg?.image_url || null;
-  } catch(e) { return null; }
+  for (const url of endpoints) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) { await sleep(1000); continue; }
+      const data = await res.json();
+      const img = data.data?.[0]?.images?.jpg?.large_image_url
+               || data.data?.[0]?.images?.jpg?.image_url;
+      if (img) return img;
+    } catch(e) {}
+    await sleep(400);
+  }
+  return null;
 }
 
 async function processFetchQueue() {
   if (fetching) return;
   fetching = true;
-
   const wrap = document.getElementById('progressWrap');
-  const bar = document.getElementById('progressBar');
-  const label = document.getElementById('progressLabel');
-
+  const bar  = document.getElementById('progressBar');
+  const lbl  = document.getElementById('progressLabel');
   wrap.classList.add('visible');
 
   while (fetchQueue.length > 0) {
     const item = fetchQueue.shift();
-    if (item.image) continue; // already has image
-
-    label.textContent = `Chargement des covers… ${fetchedCount + 1} / ${totalToFetch}`;
-
-    let img = await fetchCover(item.searchTitle || item.title);
-    if (!img) {
-      await sleep(400);
-      img = await fetchMangaCover(item.searchTitle || item.title);
-    }
-
-    if (img) {
-      item.image = img;
-      save();
-      updateCardImage(item.id, img);
-    } else {
-      setCardNoImage(item.id);
-    }
-
+    if (item.image) { fetchedCount++; bar.style.width = (fetchedCount / totalToFetch * 100) + '%'; continue; }
+    lbl.textContent = `Chargement des covers… ${fetchedCount + 1} / ${totalToFetch}`;
+    const img = await fetchCover(item.query || item.title, item.type || 'anime');
+    if (img) { item.image = img; save(); updateCardImage(item.id, img); }
+    else { setCardNoImage(item.id); }
     fetchedCount++;
     bar.style.width = (fetchedCount / totalToFetch * 100) + '%';
-
-    // Jikan rate limit: max 3 req/sec — wait 400ms between calls
-    if (fetchQueue.length > 0) await sleep(400);
+    if (fetchQueue.length > 0) await sleep(450);
   }
 
   bar.style.width = '100%';
-  label.textContent = `✓ ${fetchedCount} covers chargées`;
-  setTimeout(() => {
-    wrap.classList.remove('visible');
-    label.textContent = '';
-  }, 2000);
-
+  lbl.textContent = `✓ Toutes les covers chargées`;
+  setTimeout(() => { wrap.classList.remove('visible'); lbl.textContent = ''; }, 2500);
   fetching = false;
+}
+
+function bindCardButtons(card, id) {
+  card.querySelector('.ov-btn.photo').onclick = e => { e.stopPropagation(); openPhoto(id); };
+  card.querySelector('.ov-btn.del').onclick   = e => { e.stopPropagation(); del(id); };
 }
 
 function updateCardImage(id, src) {
   const card = document.querySelector(`.card[data-id="${id}"]`);
   if (!card) return;
-  const imgWrap = card.querySelector('.card-img');
-  imgWrap.innerHTML = `
+  card.querySelector('.card-img').innerHTML = `
     <img src="${src}" alt="">
     <div class="card-overlay">
       <button class="ov-btn photo" title="Photo">✎</button>
       <button class="ov-btn del" title="Supprimer">✕</button>
-    </div>
-  `;
+    </div>`;
   bindCardButtons(card, id);
 }
 
@@ -638,12 +404,6 @@ function setCardNoImage(id) {
   if (ph) ph.classList.add('no-image');
 }
 
-function bindCardButtons(card, id) {
-  card.querySelector('.ov-btn.photo').onclick = e => { e.stopPropagation(); openPhoto(id); };
-  card.querySelector('.ov-btn.del').onclick   = e => { e.stopPropagation(); del(id); };
-}
-
-// ---- RENDER ----
 function render() {
   const q = document.getElementById('search').value.toLowerCase().trim();
   const list = q ? lib.filter(i => i.title.toLowerCase().includes(q)) : lib;
@@ -651,31 +411,25 @@ function render() {
   const grid = document.getElementById('grid');
   grid.innerHTML = '';
 
-  if (!list.length) {
-    grid.innerHTML = '<div class="empty">Aucune œuvre trouvée</div>';
-    return;
-  }
+  if (!list.length) { grid.innerHTML = '<div class="empty">Aucune œuvre trouvée</div>'; return; }
 
-  fetchQueue = [];
-  fetchedCount = 0;
+  fetchQueue = []; fetchedCount = 0;
 
   list.forEach((item, idx) => {
     const card = document.createElement('div');
     card.className = 'card';
     card.dataset.id = item.id;
-    card.style.animationDelay = Math.min(idx * 0.012, 0.5) + 's';
+    card.style.animationDelay = Math.min(idx * 0.01, 0.5) + 's';
+
+    const overlay = `<div class="card-overlay">
+      <button class="ov-btn photo" title="Photo">✎</button>
+      <button class="ov-btn del" title="Supprimer">✕</button>
+    </div>`;
 
     if (item.image) {
       card.innerHTML = `
-        <div class="card-img">
-          <img src="${item.image}" alt="">
-          <div class="card-overlay">
-            <button class="ov-btn photo" title="Photo">✎</button>
-            <button class="ov-btn del" title="Supprimer">✕</button>
-          </div>
-        </div>
-        <div class="card-info"><div class="card-title">${item.title}</div></div>
-      `;
+        <div class="card-img"><img src="${item.image}" alt="">${overlay}</div>
+        <div class="card-info"><div class="card-title">${item.title}</div></div>`;
     } else {
       card.innerHTML = `
         <div class="card-img">
@@ -684,13 +438,9 @@ function render() {
             <div class="ph-icon">◎</div>
             <div class="ph-text">Introuvable</div>
           </div>
-          <div class="card-overlay">
-            <button class="ov-btn photo" title="Photo">✎</button>
-            <button class="ov-btn del" title="Supprimer">✕</button>
-          </div>
+          ${overlay}
         </div>
-        <div class="card-info"><div class="card-title">${item.title}</div></div>
-      `;
+        <div class="card-info"><div class="card-title">${item.title}</div></div>`;
       fetchQueue.push(item);
     }
 
@@ -702,10 +452,7 @@ function render() {
   if (totalToFetch > 0) processFetchQueue();
 }
 
-function del(id) {
-  lib = lib.filter(i => i.id !== id);
-  save(); render();
-}
+function del(id) { lib = lib.filter(i => i.id !== id); save(); render(); }
 
 function openPhoto(id) {
   photoTarget = id; pendingFile = null;
@@ -715,7 +462,7 @@ function openPhoto(id) {
 
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-// ---- ADD ----
+// Add
 document.getElementById('openAdd').onclick = () => {
   document.getElementById('newTitle').value = '';
   document.getElementById('addModal').classList.add('open');
@@ -724,15 +471,14 @@ document.getElementById('openAdd').onclick = () => {
 document.getElementById('cancelAdd').onclick = () => closeModal('addModal');
 document.getElementById('addModal').onclick = e => { if (e.target.id === 'addModal') closeModal('addModal'); };
 document.getElementById('newTitle').onkeydown = e => { if (e.key === 'Enter') document.getElementById('confirmAdd').click(); };
-document.getElementById('confirmAdd').onclick = async () => {
+document.getElementById('confirmAdd').onclick = () => {
   const t = document.getElementById('newTitle').value.trim();
   if (!t) return;
-  const newItem = { id: nextId++, title: t, searchTitle: t, image: null };
-  lib.push(newItem);
+  lib.push({ id: nextId++, title: t, query: t, type: 'anime', image: null });
   save(); render(); closeModal('addModal');
 };
 
-// ---- PHOTO ----
+// Photo
 document.getElementById('cancelPhoto').onclick = () => closeModal('photoModal');
 document.getElementById('photoModal').onclick = e => { if (e.target.id === 'photoModal') closeModal('photoModal'); };
 document.getElementById('triggerFile').onclick = () => document.getElementById('fileInput').click();

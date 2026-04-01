@@ -12,7 +12,6 @@
 
 <style>
   :root {
-    /* Nouvelle palette Bleu Nuit Dynamique */
     --bg: #0a0c14; 
     --bg-gradient: radial-gradient(circle at 50% -20%, #161b2d 0%, #0a0c14 80%);
     --surface: #121624;
@@ -40,7 +39,6 @@
     overflow-x: hidden; 
   }
   
-  /* Halo de relief bleu */
   body::before {
     content: ''; position: fixed; inset: 0;
     background: radial-gradient(ellipse 60% 40% at 80% 20%, var(--glow) 0%, transparent 70%);
@@ -179,6 +177,7 @@
     
     <select id="filterRating" onchange="render()">
       <option value="all">Toutes les notes</option>
+      <option value="ongoing">🏷️ En cours</option>
       <option value="5">⭐⭐⭐⭐⭐ (5)</option>
       <option value="4">⭐⭐⭐⭐ (4+)</option>
     </select>
@@ -292,12 +291,18 @@ function render() {
   const filterVal = document.getElementById('filterRating').value;
   
   let list = [...lib];
+
+  // LOGIQUE DE FILTRAGE
   if(searchQ) list = list.filter(i => i.title.toLowerCase().includes(searchQ));
-  if(filterVal !== 'all') {
+  
+  if(filterVal === 'ongoing') {
+      list = list.filter(i => i.ongoing === true);
+  } else if(filterVal !== 'all') {
       const fv = parseFloat(filterVal);
       list = list.filter(i => (i.rating || 0) >= fv);
   }
   
+  // LOGIQUE DE TRI
   list.sort((a, b) => {
     if(sortBy === 'rating') {
       let rA = a.rank > 0 ? a.rank : 999;

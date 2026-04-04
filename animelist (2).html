@@ -24,6 +24,7 @@
     --gold: #ffd700;
     --silver: #c0c0c0;
     --bronze: #cd7f32;
+    --drop: #ff4444;
     --glow: rgba(0, 162, 255, 0.07);
   }
 
@@ -96,14 +97,6 @@
   }
   .card:hover::before { left: 150%; }
 
-  .card.rank-1::after, .card.rank-2::after, .card.rank-3::after {
-    content: ''; position: absolute; top: -100%; left: -100%; width: 300%; height: 300%;
-    background: linear-gradient(45deg, transparent 45%, rgba(255,255,255,0.3) 50%, transparent 55%);
-    animation: shimmer 4s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    pointer-events: none; z-index: 3;
-  }
-  @keyframes shimmer { 0% { transform: translateX(-20%) translateY(-20%); } 100% { transform: translateX(20%) translateY(20%); } }
-
   .medal-badge { position: absolute; top: 12px; left: 12px; z-index: 5; font-size: 1.6rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.8)); }
   .ongoing-badge {
     position: absolute; top: 12px; right: 12px; z-index: 5;
@@ -112,6 +105,13 @@
     text-transform: uppercase; letter-spacing: 0.05em;
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
   }
+  .drop-badge {
+    position: absolute; top: 12px; right: 12px; z-index: 5;
+    background: var(--drop); color: white; padding: 4px 10px;
+    font-size: 0.6rem; font-weight: 800; border-radius: 6px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    box-shadow: 0 4px 12px rgba(255,68,68,0.4);
+  }
 
   .card-img { width: 100%; aspect-ratio: 2/3; position: relative; background: var(--surface2); overflow: hidden; }
   .card-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s; }
@@ -119,12 +119,9 @@
   .card-overlay { position: absolute; inset: 0; background: rgba(10,12,20,0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; opacity: 0; transition: 0.3s; backdrop-filter: blur(6px); z-index: 7; }
   .card:hover .card-overlay { opacity: 1; }
   
-  .ov-btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 1rem; }
+  .ov-btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 0.9rem; }
   .ov-btn:hover { background: var(--accent); color: #0a0c14; transform: scale(1.1); }
-  .ov-btn.active-gold { background: var(--gold); color: black; border-color: var(--gold); }
-  .ov-btn.active-silver { background: var(--silver); color: black; border-color: var(--silver); }
-  .ov-btn.active-bronze { background: var(--bronze); color: black; border-color: var(--bronze); }
-  .ov-btn.active-ongoing { background: var(--text); color: #0a0c14; border-color: var(--text); }
+  .ov-btn.active-drop { background: var(--drop); color: white; border-color: var(--drop); font-weight: 800; font-size: 0.6rem; }
 
   .card-info { padding: 15px; position: relative; z-index: 2; background: var(--surface); }
   .card-title { font-size: 0.9rem; font-weight: 600; color: #fff; margin-bottom: 10px; height: 2.6em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
@@ -137,12 +134,6 @@
 
   .modal-bg { position: fixed; inset: 0; background: rgba(5,7,15,0.9); backdrop-filter: blur(12px); z-index: 100; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.3s; }
   .modal-bg.open { opacity: 1; pointer-events: all; }
-  .modal { background: var(--surface2); border: 1px solid var(--border); border-radius: 28px; padding: 40px; width: 90%; max-width: 420px; box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
-  .modal h2 { font-family: 'Playfair Display', serif; margin-bottom: 20px; }
-  .modal input { width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 16px; border-radius: 14px; margin-top: 10px; outline: none; }
-  .modal-actions { display: flex; gap: 12px; margin-top: 30px; }
-  .btn-ok { flex: 1; background: var(--accent); color: #0a0c14; border: none; padding: 16px; font-weight: 700; border-radius: 14px; cursor: pointer; }
-  .btn-no { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 16px; border-radius: 14px; cursor: pointer; }
 </style>
 </head>
 <body id="body">
@@ -178,6 +169,7 @@
     <select id="filterRating" onchange="render()">
       <option value="all">Toutes les notes</option>
       <option value="ongoing">🏷️ En cours</option>
+      <option value="drop">❌ Abandonnés (DROP)</option>
       <option value="5">⭐⭐⭐⭐⭐ (5)</option>
       <option value="4">⭐⭐⭐⭐ (4+)</option>
     </select>
@@ -193,8 +185,8 @@
   <div class="grid" id="grid"></div>
 </div>
 
-<div class="modal-bg" id="addModal"><div class="modal"><h2>Nouvelle œuvre</h2><input type="text" id="newTitle" placeholder="Ex: Berserk"><div class="modal-actions"><button class="btn-no" onclick="closeM('addModal')">Annuler</button><button class="btn-ok" id="confirmAdd">Ajouter</button></div></div></div>
-<div class="modal-bg" id="photoModal"><div class="modal"><h2>L'image parfaite</h2><input type="text" id="photoUrl" placeholder="Lien de l'image..."><div style="margin:20px 0; text-align:center; color:var(--muted); font-size:0.8rem;">— OU —</div><button class="btn-no" style="width:100%" onclick="document.getElementById('fileInput').click()">📁 Fichier local</button><input type="file" id="fileInput" style="display:none" accept="image/*"><div class="modal-actions"><button class="btn-no" onclick="closeM('photoModal')">Annuler</button><button class="btn-ok" id="confirmPhoto">Sauvegarder</button></div></div></div>
+<div class="modal-bg" id="addModal"><div style="background:var(--surface2); border:1px solid var(--border); border-radius:28px; padding:40px; width:90%; max-width:420px;"><h2>Nouvelle œuvre</h2><input type="text" id="newTitle" style="width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text); padding:16px; border-radius:14px; margin-top:10px; outline:none;" placeholder="Ex: Berserk"><div style="display:flex; gap:12px; margin-top:30px;"><button style="background:transparent; border:1px solid var(--border); color:var(--muted); padding:16px; border-radius:14px; cursor:pointer;" onclick="closeM('addModal')">Annuler</button><button style="flex:1; background:var(--accent); color:#0a0c14; border:none; padding:16px; font-weight:700; border-radius:14px; cursor:pointer;" id="confirmAdd">Ajouter</button></div></div></div>
+<div class="modal-bg" id="photoModal"><div style="background:var(--surface2); border:1px solid var(--border); border-radius:28px; padding:40px; width:90%; max-width:420px;"><h2>L'image parfaite</h2><input type="text" id="photoUrl" style="width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text); padding:16px; border-radius:14px; margin-top:10px; outline:none;" placeholder="Lien de l'image..."><div style="margin:20px 0; text-align:center; color:var(--muted); font-size:0.8rem;">— OU —</div><button style="width:100%; background:transparent; border:1px solid var(--border); color:var(--muted); padding:16px; border-radius:14px; cursor:pointer;" onclick="document.getElementById('fileInput').click()">📁 Fichier local</button><input type="file" id="fileInput" style="display:none" accept="image/*"><div style="display:flex; gap:12px; margin-top:30px;"><button style="background:transparent; border:1px solid var(--border); color:var(--muted); padding:16px; border-radius:14px; cursor:pointer;" onclick="closeM('photoModal')">Annuler</button><button style="flex:1; background:var(--accent); color:#0a0c14; border:none; padding:16px; font-weight:700; border-radius:14px; cursor:pointer;" id="confirmPhoto">Sauvegarder</button></div></div></div>
 
 <script>
 const KEY = 'anime_lib_v4';
@@ -203,44 +195,15 @@ let lib = [], nextId = 1, photoTarget = null, pendingFile = null, isUnlocked = f
 
 function handleAuth() {
   if (!isUnlocked) {
-    const p = prompt("Entrez le mot de passe pour modifier :");
-    if (p === PASS) {
-      isUnlocked = true;
-      document.body.classList.add('unlocked');
-      document.getElementById('lockTrigger').textContent = "🔓";
-      render();
-    } else if (p !== null) alert("Accès refusé.");
-  } else {
-    isUnlocked = false;
-    document.body.classList.remove('unlocked');
-    document.getElementById('lockTrigger').textContent = "🔒";
-    render();
-  }
+    const p = prompt("Mot de passe :");
+    if (p === PASS) { isUnlocked = true; document.body.classList.add('unlocked'); document.getElementById('lockTrigger').textContent = "🔓"; render(); }
+  } else { isUnlocked = false; document.body.classList.remove('unlocked'); document.getElementById('lockTrigger').textContent = "🔒"; render(); }
 }
 
 function save() { if(isUnlocked) localStorage.setItem(KEY, JSON.stringify({ lib, nextId })); }
-
 function load() {
   const s = localStorage.getItem(KEY);
-  if (s) { 
-    try { 
-      const d = JSON.parse(s); 
-      lib = d.lib || []; 
-      nextId = d.nextId || 1; 
-      cleanDoubles();
-    } catch(e) { lib = []; } 
-  } 
-}
-
-function cleanDoubles() {
-    const dn = lib.filter(i => i.title.toLowerCase().includes('death note'));
-    if (dn.length > 1) {
-        const main = dn[0];
-        main.title = "Death Note + Short Stories";
-        const toRem = dn.slice(1).map(i => i.id);
-        lib = lib.filter(i => !toRem.includes(i.id));
-        save();
-    }
+  if (s) { const d = JSON.parse(s); lib = d.lib || []; nextId = d.nextId || 1; }
 }
 
 function setRating(id, val, event) {
@@ -249,11 +212,7 @@ function setRating(id, val, event) {
   const rect = event.currentTarget.getBoundingClientRect();
   const finalVal = val - ((event.clientX - rect.left) < rect.width / 2 ? 0.5 : 0);
   const itm = lib.find(i => i.id === id);
-  if(itm) { 
-    itm.rating = (itm.rating === finalVal) ? 0 : finalVal; 
-    save(); 
-    updateStarsOnly(id); 
-  }
+  if(itm) { itm.rating = (itm.rating === finalVal) ? 0 : finalVal; save(); render(); }
 }
 
 function setMedal(id, rank) {
@@ -267,42 +226,33 @@ function setMedal(id, rank) {
 function toggleOngoing(id) {
   if(!isUnlocked) return;
   const itm = lib.find(i => i.id === id);
-  if(itm) { itm.ongoing = !itm.ongoing; save(); render(); }
+  if(itm) { itm.ongoing = !itm.ongoing; itm.drop = null; save(); render(); }
 }
 
-function updateStarsOnly(id) {
-  const itm = lib.find(i => i.id === id);
-  const card = document.querySelector(`.card[data-id="${id}"]`);
-  if(!itm || !card) return;
-  const container = card.querySelector('.stars');
-  if(!container) return;
-  
-  let html = '';
-  for(let i=1; i<=5; i++) {
-    let cls = itm.rating >= i ? 'full' : (itm.rating === i-0.5 ? 'half' : '');
-    html += `<span class="star ${cls}" onclick="setRating(${itm.id}, ${i}, event)">★</span>`;
-  }
-  container.innerHTML = html;
+function cycleDrop(id) {
+    if(!isUnlocked) return;
+    const itm = lib.find(i => i.id === id);
+    if(!itm) return;
+    // Cycle: null -> S2 -> S3 -> S4 -> S5 -> null
+    const drops = [null, 'S2', 'S3', 'S4', 'S5'];
+    let idx = drops.indexOf(itm.drop) + 1;
+    if(idx >= drops.length) idx = 0;
+    itm.drop = drops[idx];
+    if(itm.drop) itm.ongoing = false;
+    save(); render();
 }
 
 function render() {
   const searchQ = document.getElementById('search').value.toLowerCase();
   const sortBy = document.getElementById('sortSelect').value;
   const filterVal = document.getElementById('filterRating').value;
-  
   let list = [...lib];
 
-  // LOGIQUE DE FILTRAGE
   if(searchQ) list = list.filter(i => i.title.toLowerCase().includes(searchQ));
+  if(filterVal === 'ongoing') list = list.filter(i => i.ongoing);
+  else if(filterVal === 'drop') list = list.filter(i => i.drop);
+  else if(filterVal !== 'all') list = list.filter(i => (i.rating || 0) >= parseFloat(filterVal));
   
-  if(filterVal === 'ongoing') {
-      list = list.filter(i => i.ongoing === true);
-  } else if(filterVal !== 'all') {
-      const fv = parseFloat(filterVal);
-      list = list.filter(i => (i.rating || 0) >= fv);
-  }
-  
-  // LOGIQUE DE TRI
   list.sort((a, b) => {
     if(sortBy === 'rating') {
       let rA = a.rank > 0 ? a.rank : 999;
@@ -322,7 +272,6 @@ function render() {
     card.className = `card ${item.rank ? 'rank-'+item.rank : ''}`;
     card.dataset.id = item.id;
     
-    let medalIcon = item.rank === 1 ? '🥇' : item.rank === 2 ? '🥈' : item.rank === 3 ? '🥉' : '';
     let starsHtml = '';
     for(let i=1; i<=5; i++) {
       let cls = (item.rating || 0) >= i ? 'full' : ((item.rating || 0) === i-0.5 ? 'half' : '');
@@ -330,14 +279,16 @@ function render() {
     }
 
     card.innerHTML = `
-      ${item.rank ? `<div class="medal-badge">${medalIcon}</div>` : ''}
+      ${item.rank ? `<div class="medal-badge">${item.rank===1?'🥇':item.rank===2?'🥈':'🥉'}</div>` : ''}
       ${item.ongoing ? `<div class="ongoing-badge">En cours</div>` : ''}
+      ${item.drop ? `<div class="drop-badge">DROP ${item.drop}</div>` : ''}
       <div class="card-img">
         ${item.image ? `<img src="${item.image}">` : `<div style="height:100%; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:0.8rem;">Image vide</div>`}
         <div class="card-overlay ${isUnlocked ? '' : 'admin-only'}">
           <div style="display:flex; gap:10px;">
             <button class="ov-btn" onclick="openP(${item.id})">✎</button>
             <button class="ov-btn ${item.ongoing ? 'active-ongoing' : ''}" onclick="toggleOngoing(${item.id})">🔖</button>
+            <button class="ov-btn ${item.drop ? 'active-drop' : ''}" onclick="cycleDrop(${item.id})">${item.drop || 'DROP'}</button>
             <button class="ov-btn" onclick="del(${item.id})">✕</button>
           </div>
           <div style="margin-top:5px; border-top:1px solid rgba(255,255,255,0.1); padding-top:10px; display:flex; gap:5px;">
@@ -356,26 +307,23 @@ function render() {
   });
 }
 
-function del(id) { if(!isUnlocked) return; if(confirm("Supprimer ?")) { lib = lib.filter(i => i.id !== id); save(); render(); } }
-function openP(id) { if(!isUnlocked) return; photoTarget = id; document.getElementById('photoModal').classList.add('open'); }
+function del(id) { if(isUnlocked && confirm("Supprimer ?")) { lib = lib.filter(i => i.id !== id); save(); render(); } }
+function openP(id) { if(isUnlocked) { photoTarget = id; document.getElementById('photoModal').classList.add('open'); } }
 function closeM(id) { document.getElementById(id).classList.remove('open'); }
 
 function exportData() {
-  if(!isUnlocked) return;
   const blob = new Blob([JSON.stringify({lib, nextId})], {type: 'application/json'});
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'ma_biblio.json'; a.click();
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'biblio.json'; a.click();
 }
 function importData(e) {
-  if(!isUnlocked) return;
   const r = new FileReader();
-  r.onload = (ev) => { try { const d = JSON.parse(ev.target.result); lib = d.lib; nextId = d.nextId; cleanDoubles(); save(); render(); } catch(err){alert("Erreur de fichier.");} };
+  r.onload = (ev) => { const d = JSON.parse(ev.target.result); lib = d.lib; nextId = d.nextId; save(); render(); };
   r.readAsText(e.target.files[0]);
 }
 
 document.getElementById('confirmAdd').onclick = () => {
-  if(!isUnlocked) return;
   const t = document.getElementById('newTitle').value.trim();
-  if(t) { lib.push({id: nextId++, title: t, image: null, rating: 0, rank: 0, ongoing: false}); save(); render(); closeM('addModal'); document.getElementById('newTitle').value=''; }
+  if(t) { lib.push({id: nextId++, title: t, image: null, rating: 0, rank: 0, ongoing: false, drop: null}); save(); render(); closeM('addModal'); document.getElementById('newTitle').value=''; }
 };
 
 document.getElementById('fileInput').onchange = e => {

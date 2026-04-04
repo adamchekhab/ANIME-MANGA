@@ -121,7 +121,15 @@
   
   .ov-btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 0.9rem; }
   .ov-btn:hover { background: var(--accent); color: #0a0c14; transform: scale(1.1); }
-  .ov-btn.active-drop { background: var(--drop); color: white; border-color: var(--drop); font-weight: 800; font-size: 0.6rem; }
+  
+  .ov-btn.active-drop { 
+    background: var(--drop); 
+    color: white; 
+    border-color: var(--drop); 
+    font-weight: 600; 
+    font-size: 0.65rem; 
+    text-transform: lowercase;
+  }
 
   .card-info { padding: 15px; position: relative; z-index: 2; background: var(--surface); }
   .card-title { font-size: 0.9rem; font-weight: 600; color: #fff; margin-bottom: 10px; height: 2.6em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
@@ -233,7 +241,6 @@ function cycleDrop(id) {
     if(!isUnlocked) return;
     const itm = lib.find(i => i.id === id);
     if(!itm) return;
-    // Cycle: null -> S2 -> S3 -> S4 -> S5 -> null
     const drops = [null, 'S2', 'S3', 'S4', 'S5'];
     let idx = drops.indexOf(itm.drop) + 1;
     if(idx >= drops.length) idx = 0;
@@ -288,7 +295,9 @@ function render() {
           <div style="display:flex; gap:10px;">
             <button class="ov-btn" onclick="openP(${item.id})">✎</button>
             <button class="ov-btn ${item.ongoing ? 'active-ongoing' : ''}" onclick="toggleOngoing(${item.id})">🔖</button>
-            <button class="ov-btn ${item.drop ? 'active-drop' : ''}" onclick="cycleDrop(${item.id})">${item.drop || 'DROP'}</button>
+            <button class="ov-btn ${item.drop ? 'active-drop' : ''}" onclick="cycleDrop(${item.id})">
+                ${item.drop ? item.drop.toLowerCase() : 'drop'}
+            </button>
             <button class="ov-btn" onclick="del(${item.id})">✕</button>
           </div>
           <div style="margin-top:5px; border-top:1px solid rgba(255,255,255,0.1); padding-top:10px; display:flex; gap:5px;">

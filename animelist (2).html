@@ -127,8 +127,7 @@
     color: white; 
     border-color: var(--drop); 
     font-weight: 600; 
-    font-size: 0.65rem; 
-    text-transform: lowercase;
+    font-size: 0.8rem;
   }
 
   .card-info { padding: 15px; position: relative; z-index: 2; background: var(--surface); }
@@ -177,7 +176,7 @@
     <select id="filterRating" onchange="render()">
       <option value="all">Toutes les notes</option>
       <option value="ongoing">🏷️ En cours</option>
-      <option value="drop">❌ Abandonnés (DROP)</option>
+      <option value="drop">🏳️ Abandonnés (DROP)</option>
       <option value="5">⭐⭐⭐⭐⭐ (5)</option>
       <option value="4">⭐⭐⭐⭐ (4+)</option>
     </select>
@@ -241,7 +240,7 @@ function cycleDrop(id) {
     if(!isUnlocked) return;
     const itm = lib.find(i => i.id === id);
     if(!itm) return;
-    const drops = [null, 'S2', 'S3', 'S4', 'S5'];
+    const drops = [null, '2', '3', '4', '5'];
     let idx = drops.indexOf(itm.drop) + 1;
     if(idx >= drops.length) idx = 0;
     itm.drop = drops[idx];
@@ -288,7 +287,7 @@ function render() {
     card.innerHTML = `
       ${item.rank ? `<div class="medal-badge">${item.rank===1?'🥇':item.rank===2?'🥈':'🥉'}</div>` : ''}
       ${item.ongoing ? `<div class="ongoing-badge">En cours</div>` : ''}
-      ${item.drop ? `<div class="drop-badge">DROP ${item.drop}</div>` : ''}
+      ${item.drop ? `<div class="drop-badge">DROP S${item.drop}</div>` : ''}
       <div class="card-img">
         ${item.image ? `<img src="${item.image}">` : `<div style="height:100%; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:0.8rem;">Image vide</div>`}
         <div class="card-overlay ${isUnlocked ? '' : 'admin-only'}">
@@ -296,7 +295,7 @@ function render() {
             <button class="ov-btn" onclick="openP(${item.id})">✎</button>
             <button class="ov-btn ${item.ongoing ? 'active-ongoing' : ''}" onclick="toggleOngoing(${item.id})">🔖</button>
             <button class="ov-btn ${item.drop ? 'active-drop' : ''}" onclick="cycleDrop(${item.id})">
-                ${item.drop ? item.drop.toLowerCase() : 'drop'}
+                🏳️${item.drop || ''}
             </button>
             <button class="ov-btn" onclick="del(${item.id})">✕</button>
           </div>

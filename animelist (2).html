@@ -149,7 +149,6 @@
   .star.full { color: var(--star); text-shadow: 0 0 8px rgba(255, 204, 51, 0.4); }
   .star.half::after { content: '★'; position: absolute; left: 0; width: 50%; overflow: hidden; color: var(--star); }
 
-  /* Style pour le texte "Non noté" */
   .not-rated { font-size: 0.65rem; color: var(--muted); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
 
   .modal-bg { position: fixed; inset: 0; background: rgba(5,7,15,0.9); backdrop-filter: blur(12px); z-index: 100; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.3s; }
@@ -273,6 +272,10 @@ function render() {
   else if(filterVal !== 'all') list = list.filter(i => (i.rating || 0) >= parseFloat(filterVal));
   
   list.sort((a, b) => {
+    // LOGIQUE DE TRI SPÉCIALE DROP : Toujours en dernier
+    if (a.drop && !b.drop) return 1;
+    if (!a.drop && b.drop) return -1;
+
     if(sortBy === 'rating') {
       let rA = a.rank > 0 ? a.rank : 999;
       let rB = b.rank > 0 ? b.rank : 999;
@@ -291,7 +294,6 @@ function render() {
     card.className = `card ${item.rank ? 'rank-'+item.rank : ''}`;
     card.dataset.id = item.id;
     
-    // Génération des étoiles ou du texte "Non noté"
     let ratingContent = '';
     if (item.drop && (item.rating === 0 || !item.rating)) {
         ratingContent = `<span class="not-rated">Non noté</span>`;

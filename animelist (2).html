@@ -8,7 +8,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
 
 <style>
   :root {
@@ -53,9 +53,31 @@
     display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap;
   }
 
-  h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 700; font-style: italic; letter-spacing: -0.01em; }
-  h1 span { color: var(--accent); font-style: normal; }
-  .subtitle { margin-top: 8px; color: var(--muted); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; }
+  /* Nouvelle police de titre plus moderne et harmonisée */
+  h1 { 
+    font-family: 'Montserrat', sans-serif; 
+    font-size: clamp(2rem, 4vw, 3rem); 
+    font-weight: 800; 
+    letter-spacing: -0.03em; 
+    text-transform: uppercase;
+    line-height: 1;
+    color: var(--text);
+  }
+  h1 span { 
+    background: linear-gradient(135deg, #e8c97e 0%, #d4af37 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-style: normal;
+  }
+  .subtitle { 
+    margin-top: 10px; 
+    color: var(--muted); 
+    font-size: 0.75rem; 
+    letter-spacing: 0.4em; 
+    text-transform: uppercase; 
+    font-weight: 600; 
+    opacity: 0.8;
+  }
 
   .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
   .tools { display: flex; gap: 8px; align-items: center; }
@@ -68,7 +90,7 @@
   body.unlocked .admin-only { display: flex !important; }
 
   .count-box { display: flex; flex-direction: column; align-items: flex-end; }
-  .count { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: var(--accent); line-height: 1; font-weight: 700; }
+  .count { font-family: 'Montserrat', sans-serif; font-size: 2.8rem; color: var(--accent); line-height: 1; font-weight: 700; }
   .count-label { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-top: 4px; font-weight: 600; }
 
   .topbar { display: flex; gap: 12px; align-items: center; margin-bottom: 30px; flex-wrap: wrap; }
@@ -149,7 +171,7 @@
   <header>
     <div>
       <h1>Ma <span>Bibliothèque</span></h1>
-      <p class="subtitle">Collection Privée · Podium Dynamique</p>
+      <p class="subtitle">Archives & Collection Personnelle</p>
     </div>
     <div class="header-right">
       <div class="tools">
@@ -162,7 +184,7 @@
       </div>
       <div class="count-box">
         <div class="count" id="total">0</div>
-        <div class="count-label">Œuvres</div>
+        <div class="count-label">Titres</div>
       </div>
     </div>
   </header>

@@ -61,12 +61,13 @@
     letter-spacing: -0.03em; 
     text-transform: uppercase;
     line-height: 1;
-    color: var(--text);
-  }
-  h1 span { 
+    /* Application du doré sur l'ensemble du titre */
     background: linear-gradient(135deg, #e8c97e 0%, #d4af37 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+  h1 span { 
+    /* Rétablit le style normal pour le span si nécessaire (héritage supprimé) */
     font-style: normal;
   }
   .subtitle { 
@@ -170,7 +171,7 @@
 <div class="container">
   <header>
     <div>
-      <h1>Ma <span>Bibliothèque</span></h1>
+      <h1>Ma Bibliothèque</h1>
       <p class="subtitle">Archives & Collection Personnelle</p>
     </div>
     <div class="header-right">

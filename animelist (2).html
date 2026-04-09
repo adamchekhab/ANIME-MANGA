@@ -53,7 +53,6 @@
     display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap;
   }
 
-  /* Nouvelle police de titre plus moderne et harmonisée */
   h1 { 
     font-family: 'Montserrat', sans-serif; 
     font-size: clamp(2rem, 4vw, 3rem); 
@@ -61,15 +60,11 @@
     letter-spacing: -0.03em; 
     text-transform: uppercase;
     line-height: 1;
-    /* Application du doré sur l'ensemble du titre */
     background: linear-gradient(135deg, #e8c97e 0%, #d4af37 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-  h1 span { 
-    /* Rétablit le style normal pour le span si nécessaire (héritage supprimé) */
-    font-style: normal;
-  }
+  
   .subtitle { 
     margin-top: 10px; 
     color: var(--muted); 
@@ -113,13 +108,6 @@
   .rank-2 { border: 2px solid var(--silver); }
   .rank-3 { border: 2px solid var(--bronze); }
   
-  .card::before {
-    content: ''; position: absolute; top: 0; left: -150%; width: 80%; height: 100%;
-    background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
-    transform: skewX(-25deg); transition: 0.7s; z-index: 6; pointer-events: none;
-  }
-  .card:hover::before { left: 150%; }
-
   .medal-badge { position: absolute; top: 12px; left: 12px; z-index: 5; font-size: 1.6rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.8)); }
   .ongoing-badge {
     position: absolute; top: 12px; right: 12px; z-index: 5;
@@ -142,15 +130,14 @@
   .card-overlay { position: absolute; inset: 0; background: rgba(10,12,20,0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; opacity: 0; transition: 0.3s; backdrop-filter: blur(6px); z-index: 7; }
   .card:hover .card-overlay { opacity: 1; }
   
-  .ov-btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 0.9rem; }
-  .ov-btn:hover { background: var(--accent); color: #0a0c14; transform: scale(1.1); }
+  .ov-btn { width: 42px; height: 38px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 0.8rem; }
+  .ov-btn:hover { background: var(--accent); color: #0a0c14; transform: scale(1.05); }
   
   .ov-btn.active-drop { 
     background: var(--drop); 
     color: white; 
     border-color: var(--drop); 
-    font-weight: 600; 
-    font-size: 0.8rem;
+    font-weight: 700;
   }
 
   .card-info { padding: 15px; position: relative; z-index: 2; background: var(--surface); }
@@ -263,7 +250,8 @@ function cycleDrop(id) {
     if(!isUnlocked) return;
     const itm = lib.find(i => i.id === id);
     if(!itm) return;
-    const drops = [null, '2', '3', '4', '5'];
+    // Ajout d'une option 'YES' pour un drop simple sans saison
+    const drops = [null, 'YES', '2', '3', '4', '5'];
     let idx = drops.indexOf(itm.drop) + 1;
     if(idx >= drops.length) idx = 0;
     itm.drop = drops[idx];
@@ -307,18 +295,23 @@ function render() {
       starsHtml += `<span class="star ${cls}" onclick="setRating(${item.id}, ${i}, event)">★</span>`;
     }
 
+    // Gestion de l'affichage du badge de drop
+    let dropLabel = "";
+    if(item.drop === 'YES') dropLabel = "DROP";
+    else if(item.drop) dropLabel = "DROP S" + item.drop;
+
     card.innerHTML = `
       ${item.rank ? `<div class="medal-badge">${item.rank===1?'🥇':item.rank===2?'🥈':'🥉'}</div>` : ''}
       ${item.ongoing ? `<div class="ongoing-badge">En cours</div>` : ''}
-      ${item.drop ? `<div class="drop-badge">DROP S${item.drop}</div>` : ''}
+      ${item.drop ? `<div class="drop-badge">${dropLabel}</div>` : ''}
       <div class="card-img">
         ${item.image ? `<img src="${item.image}">` : `<div style="height:100%; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:0.8rem;">Image vide</div>`}
         <div class="card-overlay ${isUnlocked ? '' : 'admin-only'}">
-          <div style="display:flex; gap:10px;">
+          <div style="display:flex; gap:8px;">
             <button class="ov-btn" onclick="openP(${item.id})">✎</button>
-            <button class="ov-btn ${item.ongoing ? 'active-ongoing' : ''}" onclick="toggleOngoing(${item.id})">🔖</button>
-            <button class="ov-btn ${item.drop ? 'active-drop' : ''}" onclick="cycleDrop(${item.id})">
-                🏳️${item.drop || ''}
+            <button class="ov-btn ${item.ongoing ? 'active-ongoing' : ''}" onclick="toggleOngoing(${item.id})" title="En cours">🔖</button>
+            <button class="ov-btn ${item.drop ? 'active-drop' : ''}" onclick="cycleDrop(${item.id})" title="Drop Cycle">
+                🏳️${item.drop && item.drop !== 'YES' ? item.drop : ''}
             </button>
             <button class="ov-btn" onclick="del(${item.id})">✕</button>
           </div>

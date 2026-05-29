@@ -21,13 +21,15 @@
     --text: #e8e6e0;
     --muted: #7e859e;
     --star: #ffcc33;
-    --gold: #ffd700;
-    --silver: #c0c0c0;
-    --bronze: #cd7f32;
-    --iron: #4a5568;
-    --crystal: #00f0ff;
     --drop: #ff4444;
     --glow: rgba(0, 162, 255, 0.07);
+
+    /* Couleurs des Pierres Précieuses */
+    --gem-diamond: #00f0ff;
+    --gem-ruby: #ff2a5f;
+    --gem-emerald: #00ff66;
+    --gem-amethyst: #b026ff;
+    --gem-topaz: #ffaa00;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -79,10 +81,8 @@
 
   .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
   .tools { display: flex; gap: 8px; align-items: center; }
-  
   .tool-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); padding: 6px 12px; font-size: 0.6rem; border-radius: 6px; cursor: pointer; text-transform: uppercase; font-weight: 700; transition: 0.2s; }
   
-  /* Tout le monde peut éditer */
   .star { pointer-events: all; }
   .grid .card .card-overlay { display: flex !important; }
 
@@ -105,36 +105,33 @@
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; position: relative; transition: 0.4s cubic-bezier(0.2, 1, 0.2, 1); }
   .card:hover { transform: translateY(-10px); border-color: rgba(232,201,126,0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
   
-  /* --- EFFET BRILLANT ET BORDURES TOP 5 --- */
-  @keyframes goldGlow { 0% { box-shadow: 0 0 10px rgba(255,215,0,0.2); } 50% { box-shadow: 0 0 25px rgba(255,215,0,0.5); } 100% { box-shadow: 0 0 10px rgba(255,215,0,0.2); } }
-  @keyframes silverGlow { 0% { box-shadow: 0 0 10px rgba(192,192,192,0.2); } 50% { box-shadow: 0 0 25px rgba(192,192,192,0.5); } 100% { box-shadow: 0 0 10px rgba(192,192,192,0.2); } }
-  @keyframes bronzeGlow { 0% { box-shadow: 0 0 10px rgba(205,127,50,0.2); } 50% { box-shadow: 0 0 25px rgba(205,127,50,0.5); } 100% { box-shadow: 0 0 10px rgba(205,127,50,0.2); } }
-  @keyframes ironGlow { 0% { box-shadow: 0 0 10px rgba(74,85,104,0.3); } 50% { box-shadow: 0 0 25px rgba(74,85,104,0.6); } 100% { box-shadow: 0 0 10px rgba(74,85,104,0.3); } }
-  @keyframes crystalGlow { 0% { box-shadow: 0 0 10px rgba(0,240,255,0.2); } 50% { box-shadow: 0 0 25px rgba(0,240,255,0.6); } 100% { box-shadow: 0 0 10px rgba(0,240,255,0.2); } }
+  /* --- EFFETS DE LUMIÈRE DES GEMMES SUR LES CARTES --- */
+  @keyframes diamondGlow { 0% { box-shadow: 0 0 10px rgba(0,240,255,0.15); } 50% { box-shadow: 0 0 25px rgba(0,240,255,0.45); } 100% { box-shadow: 0 0 10px rgba(0,240,255,0.15); } }
+  @keyframes rubyGlow { 0% { box-shadow: 0 0 10px rgba(255,42,95,0.15); } 50% { box-shadow: 0 0 25px rgba(255,42,95,0.45); } 100% { box-shadow: 0 0 10px rgba(255,42,95,0.15); } }
+  @keyframes emeraldGlow { 0% { box-shadow: 0 0 10px rgba(0,255,102,0.15); } 50% { box-shadow: 0 0 25px rgba(0,255,102,0.45); } 100% { box-shadow: 0 0 10px rgba(0,255,102,0.15); } }
+  @keyframes amethystGlow { 0% { box-shadow: 0 0 10px rgba(176,38,255,0.15); } 50% { box-shadow: 0 0 25px rgba(176,38,255,0.45); } 100% { box-shadow: 0 0 10px rgba(176,38,255,0.15); } }
+  @keyframes topazGlow { 0% { box-shadow: 0 0 10px rgba(255,170,0,0.15); } 50% { box-shadow: 0 0 25px rgba(255,170,0,0.45); } 100% { box-shadow: 0 0 10px rgba(255,170,0,0.15); } }
 
-  .rank-1 { border: 2px solid var(--gold); animation: goldGlow 3s infinite ease-in-out; }
-  .rank-2 { border: 2px solid var(--silver); animation: silverGlow 3s infinite ease-in-out; }
-  .rank-3 { border: 2px solid var(--bronze); animation: bronzeGlow 3s infinite ease-in-out; }
-  .rank-4 { border: 2px solid var(--iron); animation: ironGlow 3s infinite ease-in-out; }
-  .rank-5 { border: 2px solid var(--crystal); animation: crystalGlow 3s infinite ease-in-out; }
+  .rank-1 { border: 2px solid var(--gem-diamond); animation: diamondGlow 3s infinite ease-in-out; }
+  .rank-2 { border: 2px solid var(--gem-ruby); animation: rubyGlow 3s infinite ease-in-out; }
+  .rank-3 { border: 2px solid var(--gem-emerald); animation: emeraldGlow 3s infinite ease-in-out; }
+  .rank-4 { border: 2px solid var(--gem-amethyst); animation: amethystGlow 3s infinite ease-in-out; }
+  .rank-5 { border: 2px solid var(--gem-topaz); animation: topazGlow 3s infinite ease-in-out; }
   
-  .medal-badge { position: absolute; top: 12px; left: 12px; z-index: 5; font-size: 1.6rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.8)); }
+  /* --- LOGO GEMME MAGISTRAL AVEC CHIFFRE INCLUS --- */
+  .gem-badge {
+    position: absolute; top: 12px; left: 12px; z-index: 5;
+    width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+    font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 1.1rem; color: #fff;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.7));
+  }
   
-  /* --- NOUVEAUX BADGES TOP 4 ET TOP 5 AVEC CHIFFRES --- */
-  .rank-4-badge {
-    position: absolute; top: 12px; left: 12px; z-index: 5;
-    background: var(--iron); color: var(--crystal); padding: 5px 8px;
-    font-size: 0.9rem; font-weight: 800; border-radius: 8px;
-    text-shadow: 0 0 8px rgba(0,240,255,0.5);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-  }
-  .rank-5-badge {
-    position: absolute; top: 12px; left: 12px; z-index: 5;
-    background: var(--surface2); color: white; padding: 5px 8px;
-    font-size: 0.9rem; font-weight: 800; border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-  }
+  /* Formes vectorielles CSS pures pour dessiner les gemmes */
+  .gem-1 { background: var(--gem-diamond); clip-path: polygon(50% 0%, 100% 35%, 80% 100%, 20% 100%, 0% 35%); color: #051a24; }
+  .gem-2 { background: var(--gem-ruby); clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); }
+  .gem-3 { background: var(--gem-emerald); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); }
+  .gem-4 { background: var(--gem-amethyst); clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%); }
+  .gem-5 { background: var(--gem-topaz); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); color: #1c1100; }
 
   .ongoing-badge {
     position: absolute; top: 12px; right: 12px; z-index: 5;
@@ -160,13 +157,18 @@
   .ov-btn { width: 42px; height: 38px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 0.8rem; }
   .ov-btn:hover { background: var(--accent); color: #0a0c14; transform: scale(1.05); }
   
-  .ov-btn.active-medal { background: var(--accent); color: #0a0c14; border-color: var(--accent); }
-  .ov-btn.active-drop { 
-    background: var(--drop); 
-    color: white; 
-    border-color: var(--drop); 
-    font-weight: 700;
-  }
+  /* Bouton Gemme d'administration customisé */
+  .gem-selector { width: 34px; height: 34px; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 0.85rem; color: #fff; cursor: pointer; border: none; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+  .gem-selector:hover { transform: scale(1.15); filter: brightness(1.2); }
+  .gem-selector.active-gem { box-shadow: 0 0 12px currentColor; border: 2px solid white; }
+
+  .sel-1 { background: var(--gem-diamond); clip-path: polygon(50% 0%, 100% 35%, 80% 100%, 20% 100%, 0% 35%); color: #051a24; }
+  .sel-2 { background: var(--gem-ruby); clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); }
+  .sel-3 { background: var(--gem-emerald); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); }
+  .sel-4 { background: var(--gem-amethyst); clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%); }
+  .sel-5 { background: var(--gem-topaz); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); color: #1c1100; }
+
+  .ov-btn.active-drop { background: var(--drop); color: white; border-color: var(--drop); font-weight: 700; }
 
   .card-info { padding: 15px; position: relative; z-index: 2; background: var(--surface); }
   .card-title { font-size: 0.9rem; font-weight: 600; color: #fff; margin-bottom: 10px; height: 2.6em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
@@ -321,16 +323,14 @@ function render() {
     if(item.drop === 'YES') dropLabel = "DROP";
     else if(item.drop) dropLabel = "DROP S" + item.drop;
 
-    // Gestion de l'affichage textuel ou emoji des 5 médailles
-    let medalHtml = '';
-    if(item.rank === 1) medalHtml = `<div class="medal-badge">🥇</div>`;
-    else if(item.rank === 2) medalHtml = `<div class="medal-badge">🥈</div>`;
-    else if(item.rank === 3) medalHtml = `<div class="medal-badge">🥉</div>`;
-    else if(item.rank === 4) medalHtml = `<div class="rank-4-badge">4🏅</div>`; // Petit chiffre '4'
-    else if(item.rank === 5) medalHtml = `<div class="rank-5-badge">5💎</div>`; // Petit chiffre '5'
+    // Rendu dynamique de la gemme en fonction du rang
+    let gemHtml = '';
+    if(item.rank >= 1 && item.rank <= 5) {
+      gemHtml = `<div class="gem-badge gem-${item.rank}">${item.rank}</div>`;
+    }
 
     card.innerHTML = `
-      ${medalHtml}
+      ${gemHtml}
       ${item.ongoing ? `<div class="ongoing-badge">En cours</div>` : ''}
       ${item.drop ? `<div class="drop-badge">${dropLabel}</div>` : ''}
       <div class="card-img">
@@ -344,12 +344,12 @@ function render() {
             </button>
             <button class="ov-btn" onclick="del(${item.id})">✕</button>
           </div>
-          <div style="margin-top:5px; border-top:1px solid rgba(255,255,255,0.1); padding-top:10px; display:flex; gap:5px; flex-wrap:wrap; justify-content:center; width:90%;">
-            <button class="ov-btn ${item.rank===1?'active-medal':''}" onclick="setMedal(${item.id}, 1)">🥇</button>
-            <button class="ov-btn ${item.rank===2?'active-medal':''}" onclick="setMedal(${item.id}, 2)">🥈</button>
-            <button class="ov-btn ${item.rank===3?'active-medal':''}" onclick="setMedal(${item.id}, 3)">🥉</button>
-            <button class="ov-btn ${item.rank===4?'active-medal':''}" onclick="setMedal(${item.id}, 4)">4🏅</button>
-            <button class="ov-btn ${item.rank===5?'active-medal':''}" onclick="setMedal(${item.id}, 5)">5💎</button>
+          <div style="margin-top:10px; border-top:1px solid rgba(255,255,255,0.1); padding-top:12px; display:flex; gap:6px; justify-content:center; width:95%;">
+            <button class="gem-selector sel-1 ${item.rank===1?'active-gem':''}" onclick="setMedal(${item.id}, 1)">1</button>
+            <button class="gem-selector sel-2 ${item.rank===2?'active-gem':''}" onclick="setMedal(${item.id}, 2)">2</button>
+            <button class="gem-selector sel-3 ${item.rank===3?'active-gem':''}" onclick="setMedal(${item.id}, 3)">3</button>
+            <button class="gem-selector sel-4 ${item.rank===4?'active-gem':''}" onclick="setMedal(${item.id}, 4)">4</button>
+            <button class="gem-selector sel-5 ${item.rank===5?'active-gem':''}" onclick="setMedal(${item.id}, 5)">5</button>
           </div>
         </div>
       </div>

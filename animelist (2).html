@@ -24,6 +24,8 @@
     --gold: #ffd700;
     --silver: #c0c0c0;
     --bronze: #cd7f32;
+    --iron: #4a5568;
+    --crystal: #00f0ff;
     --drop: #ff4444;
     --glow: rgba(0, 162, 255, 0.07);
   }
@@ -33,7 +35,7 @@
     background: var(--bg);
     background-image: var(--bg-gradient);
     color: var(--text); 
-    font-family: 'Inter', sans-serif; 
+    font-family: 'Inter', sans-serif;  
     font-weight: 300; 
     min-height: 100vh; 
     -webkit-font-smoothing: antialiased; 
@@ -104,9 +106,18 @@
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; position: relative; transition: 0.4s cubic-bezier(0.2, 1, 0.2, 1); }
   .card:hover { transform: translateY(-10px); border-color: rgba(232,201,126,0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
   
-  .rank-1 { border: 2px solid var(--gold); }
-  .rank-2 { border: 2px solid var(--silver); }
-  .rank-3 { border: 2px solid var(--bronze); }
+  /* --- EFFET BRILLANT ET BORDURES TOP 5 --- */
+  @keyframes goldGlow { 0% { box-shadow: 0 0 10px rgba(255,215,0,0.2); } 50% { box-shadow: 0 0 25px rgba(255,215,0,0.5); } 100% { box-shadow: 0 0 10px rgba(255,215,0,0.2); } }
+  @keyframes silverGlow { 0% { box-shadow: 0 0 10px rgba(192,192,192,0.2); } 50% { box-shadow: 0 0 25px rgba(192,192,192,0.5); } 100% { box-shadow: 0 0 10px rgba(192,192,192,0.2); } }
+  @keyframes bronzeGlow { 0% { box-shadow: 0 0 10px rgba(205,127,50,0.2); } 50% { box-shadow: 0 0 25px rgba(205,127,50,0.5); } 100% { box-shadow: 0 0 10px rgba(205,127,50,0.2); } }
+  @keyframes ironGlow { 0% { box-shadow: 0 0 10px rgba(74,85,104,0.3); } 50% { box-shadow: 0 0 25px rgba(74,85,104,0.6); } 100% { box-shadow: 0 0 10px rgba(74,85,104,0.3); } }
+  @keyframes crystalGlow { 0% { box-shadow: 0 0 10px rgba(0,240,255,0.2); } 50% { box-shadow: 0 0 25px rgba(0,240,255,0.6); } 100% { box-shadow: 0 0 10px rgba(0,240,255,0.2); } }
+
+  .rank-1 { border: 2px solid var(--gold); animation: goldGlow 3s infinite ease-in-out; }
+  .rank-2 { border: 2px solid var(--silver); animation: silverGlow 3s infinite ease-in-out; }
+  .rank-3 { border: 2px solid var(--bronze); animation: bronzeGlow 3s infinite ease-in-out; }
+  .rank-4 { border: 2px solid var(--iron); animation: ironGlow 3s infinite ease-in-out; }
+  .rank-5 { border: 2px solid var(--crystal); animation: crystalGlow 3s infinite ease-in-out; }
   
   .medal-badge { position: absolute; top: 12px; left: 12px; z-index: 5; font-size: 1.6rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.8)); }
   .ongoing-badge {
@@ -133,6 +144,7 @@
   .ov-btn { width: 42px; height: 38px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 0.8rem; }
   .ov-btn:hover { background: var(--accent); color: #0a0c14; transform: scale(1.05); }
   
+  .ov-btn.active-medal { background: var(--accent); color: #0a0c14; border-color: var(--accent); }
   .ov-btn.active-drop { 
     background: var(--drop); 
     color: white; 
@@ -195,7 +207,7 @@
 
     <select id="sortSelect" onchange="render()">
       <option value="id">Plus récents</option>
-      <option value="rating">Mieux notés & Podium</option>
+      <option value="rating">Mieux notés & Top 5</option>
     </select>
     
     <button class="add-btn admin-only" id="openAdd">＋ Ajouter</button>
@@ -272,7 +284,6 @@ function render() {
   else if(filterVal !== 'all') list = list.filter(i => (i.rating || 0) >= parseFloat(filterVal));
   
   list.sort((a, b) => {
-    // LOGIQUE DE TRI SPÉCIALE DROP : Toujours en dernier
     if (a.drop && !b.drop) return 1;
     if (!a.drop && b.drop) return -1;
 
@@ -308,8 +319,16 @@ function render() {
     if(item.drop === 'YES') dropLabel = "DROP";
     else if(item.drop) dropLabel = "DROP S" + item.drop;
 
+    // Gestion de l'affichage textuel ou emoji des 5 médailles
+    let medalEmoji = '';
+    if(item.rank === 1) medalEmoji = '🥇';
+    else if(item.rank === 2) medalEmoji = '🥈';
+    else if(item.rank === 3) medalEmoji = '🥉';
+    else if(item.rank === 4) medalEmoji = '🏅';
+    else if(item.rank === 5) medalEmoji = '💎';
+
     card.innerHTML = `
-      ${item.rank ? `<div class="medal-badge">${item.rank===1?'🥇':item.rank===2?'🥈':'🥉'}</div>` : ''}
+      ${item.rank ? `<div class="medal-badge">${medalEmoji}</div>` : ''}
       ${item.ongoing ? `<div class="ongoing-badge">En cours</div>` : ''}
       ${item.drop ? `<div class="drop-badge">${dropLabel}</div>` : ''}
       <div class="card-img">
@@ -323,10 +342,12 @@ function render() {
             </button>
             <button class="ov-btn" onclick="del(${item.id})">✕</button>
           </div>
-          <div style="margin-top:5px; border-top:1px solid rgba(255,255,255,0.1); padding-top:10px; display:flex; gap:5px;">
-            <button class="ov-btn ${item.rank===1?'active-gold':''}" onclick="setMedal(${item.id}, 1)">🥇</button>
-            <button class="ov-btn ${item.rank===2?'active-silver':''}" onclick="setMedal(${item.id}, 2)">🥈</button>
-            <button class="ov-btn ${item.rank===3?'active-bronze':''}" onclick="setMedal(${item.id}, 3)">🥉</button>
+          <div style="margin-top:5px; border-top:1px solid rgba(255,255,255,0.1); padding-top:10px; display:flex; gap:5px; flex-wrap:wrap; justify-content:center; width:90%;">
+            <button class="ov-btn ${item.rank===1?'active-medal':''}" onclick="setMedal(${item.id}, 1)">🥇</button>
+            <button class="ov-btn ${item.rank===2?'active-medal':''}" onclick="setMedal(${item.id}, 2)">🥈</button>
+            <button class="ov-btn ${item.rank===3?'active-medal':''}" onclick="setMedal(${item.id}, 3)">🥉</button>
+            <button class="ov-btn ${item.rank===4?'active-medal':''}" onclick="setMedal(${item.id}, 4)">🏅</button>
+            <button class="ov-btn ${item.rank===5?'active-medal':''}" onclick="setMedal(${item.id}, 5)">💎</button>
           </div>
         </div>
       </div>
@@ -364,7 +385,7 @@ document.getElementById('fileInput').onchange = e => {
 };
 
 document.getElementById('confirmPhoto').onclick = () => {
-  const itm = lib.find(i => i.id === photoTarget);
+  const itm = lib.find(i => i.image === photoTarget || i.id === photoTarget);
   if(itm) { itm.image = pendingFile || document.getElementById('photoUrl').value.trim(); save(); render(); }
   closeM('photoModal'); pendingFile = null; document.getElementById('photoUrl').value='';
 };

@@ -35,7 +35,7 @@
     background: var(--bg);
     background-image: var(--bg-gradient);
     color: var(--text); 
-    font-family: 'Inter', sans-serif;  
+    font-family: 'Inter', sans-serif;  
     font-weight: 300; 
     min-height: 100vh; 
     -webkit-font-smoothing: antialiased; 
@@ -80,12 +80,11 @@
   .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
   .tools { display: flex; gap: 8px; align-items: center; }
   
-  .lock-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--accent); width: 40px; height: 40px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: 0.2s; margin-left: 10px; }
-  .lock-btn:hover { border-color: var(--accent); box-shadow: 0 0 15px rgba(232,201,126,0.2); }
-
   .tool-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); padding: 6px 12px; font-size: 0.6rem; border-radius: 6px; cursor: pointer; text-transform: uppercase; font-weight: 700; transition: 0.2s; }
-  .admin-only { display: none !important; }
-  body.unlocked .admin-only { display: flex !important; }
+  
+  /* Tout le monde peut éditer */
+  .star { pointer-events: all; }
+  .grid .card .card-overlay { display: flex !important; }
 
   .count-box { display: flex; flex-direction: column; align-items: flex-end; }
   .count { font-family: 'Montserrat', sans-serif; font-size: 2.8rem; color: var(--accent); line-height: 1; font-weight: 700; }
@@ -120,6 +119,23 @@
   .rank-5 { border: 2px solid var(--crystal); animation: crystalGlow 3s infinite ease-in-out; }
   
   .medal-badge { position: absolute; top: 12px; left: 12px; z-index: 5; font-size: 1.6rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.8)); }
+  
+  /* --- NOUVEAUX BADGES TOP 4 ET TOP 5 AVEC CHIFFRES --- */
+  .rank-4-badge {
+    position: absolute; top: 12px; left: 12px; z-index: 5;
+    background: var(--iron); color: var(--crystal); padding: 5px 8px;
+    font-size: 0.9rem; font-weight: 800; border-radius: 8px;
+    text-shadow: 0 0 8px rgba(0,240,255,0.5);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  }
+  .rank-5-badge {
+    position: absolute; top: 12px; left: 12px; z-index: 5;
+    background: var(--surface2); color: white; padding: 5px 8px;
+    font-size: 0.9rem; font-weight: 800; border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  }
+
   .ongoing-badge {
     position: absolute; top: 12px; right: 12px; z-index: 5;
     background: var(--accent); color: #0a0c14; padding: 4px 10px;
@@ -156,8 +172,7 @@
   .card-title { font-size: 0.9rem; font-weight: 600; color: #fff; margin-bottom: 10px; height: 2.6em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
 
   .stars { display: flex; gap: 3px; position: relative; z-index: 8; align-items: center; height: 24px; }
-  .star { font-size: 1.2rem; cursor: pointer; color: #2a2e45; position: relative; transition: 0.1s; pointer-events: none; }
-  body.unlocked .star { pointer-events: all; }
+  .star { font-size: 1.2rem; cursor: pointer; color: #2a2e45; position: relative; transition: 0.1s; }
   .star.full { color: var(--star); text-shadow: 0 0 8px rgba(255, 204, 51, 0.4); }
   .star.half::after { content: '★'; position: absolute; left: 0; width: 50%; overflow: hidden; color: var(--star); }
 
@@ -177,12 +192,11 @@
     </div>
     <div class="header-right">
       <div class="tools">
-        <div class="admin-only" style="gap:8px">
+        <div style="display:flex; gap:8px">
             <button class="tool-btn" onclick="exportData()">⬇ Export</button>
             <button class="tool-btn" onclick="document.getElementById('importFile').click()">⬆ Import</button>
             <input type="file" id="importFile" style="display:none" onchange="importData(event)" accept=".json">
         </div>
-        <button class="lock-btn" id="lockTrigger" onclick="handleAuth()" title="Accès administrateur">🔒</button>
       </div>
       <div class="count-box">
         <div class="count" id="total">0</div>
@@ -210,7 +224,7 @@
       <option value="rating">Mieux notés & Top 5</option>
     </select>
     
-    <button class="add-btn admin-only" id="openAdd">＋ Ajouter</button>
+    <button class="add-btn" id="openAdd">＋ Ajouter</button>
   </div>
 
   <div class="grid" id="grid"></div>
@@ -221,24 +235,15 @@
 
 <script>
 const KEY = 'anime_lib_v4';
-const PASS = '0451';
-let lib = [], nextId = 1, photoTarget = null, pendingFile = null, isUnlocked = false;
+let lib = [], nextId = 1, photoTarget = null, pendingFile = null;
 
-function handleAuth() {
-  if (!isUnlocked) {
-    const p = prompt("Mot de passe :");
-    if (p === PASS) { isUnlocked = true; document.body.classList.add('unlocked'); document.getElementById('lockTrigger').textContent = "🔓"; render(); }
-  } else { isUnlocked = false; document.body.classList.remove('unlocked'); document.getElementById('lockTrigger').textContent = "🔒"; render(); }
-}
-
-function save() { if(isUnlocked) localStorage.setItem(KEY, JSON.stringify({ lib, nextId })); }
+function save() { localStorage.setItem(KEY, JSON.stringify({ lib, nextId })); }
 function load() {
   const s = localStorage.getItem(KEY);
   if (s) { const d = JSON.parse(s); lib = d.lib || []; nextId = d.nextId || 1; }
 }
 
 function setRating(id, val, event) {
-  if(!isUnlocked) return;
   event.stopPropagation();
   const rect = event.currentTarget.getBoundingClientRect();
   const finalVal = val - ((event.clientX - rect.left) < rect.width / 2 ? 0.5 : 0);
@@ -247,7 +252,6 @@ function setRating(id, val, event) {
 }
 
 function setMedal(id, rank) {
-  if(!isUnlocked) return;
   lib.forEach(item => { if(item.rank === rank) item.rank = 0; });
   const itm = lib.find(i => i.id === id);
   if(itm) itm.rank = (itm.rank === rank) ? 0 : rank;
@@ -255,13 +259,11 @@ function setMedal(id, rank) {
 }
 
 function toggleOngoing(id) {
-  if(!isUnlocked) return;
   const itm = lib.find(i => i.id === id);
   if(itm) { itm.ongoing = !itm.ongoing; itm.drop = null; save(); render(); }
 }
 
 function cycleDrop(id) {
-    if(!isUnlocked) return;
     const itm = lib.find(i => i.id === id);
     if(!itm) return;
     const drops = [null, 'YES', '2', '3', '4', '5'];
@@ -320,20 +322,20 @@ function render() {
     else if(item.drop) dropLabel = "DROP S" + item.drop;
 
     // Gestion de l'affichage textuel ou emoji des 5 médailles
-    let medalEmoji = '';
-    if(item.rank === 1) medalEmoji = '🥇';
-    else if(item.rank === 2) medalEmoji = '🥈';
-    else if(item.rank === 3) medalEmoji = '🥉';
-    else if(item.rank === 4) medalEmoji = '🏅';
-    else if(item.rank === 5) medalEmoji = '💎';
+    let medalHtml = '';
+    if(item.rank === 1) medalHtml = `<div class="medal-badge">🥇</div>`;
+    else if(item.rank === 2) medalHtml = `<div class="medal-badge">🥈</div>`;
+    else if(item.rank === 3) medalHtml = `<div class="medal-badge">🥉</div>`;
+    else if(item.rank === 4) medalHtml = `<div class="rank-4-badge">4🏅</div>`; // Petit chiffre '4'
+    else if(item.rank === 5) medalHtml = `<div class="rank-5-badge">5💎</div>`; // Petit chiffre '5'
 
     card.innerHTML = `
-      ${item.rank ? `<div class="medal-badge">${medalEmoji}</div>` : ''}
+      ${medalHtml}
       ${item.ongoing ? `<div class="ongoing-badge">En cours</div>` : ''}
       ${item.drop ? `<div class="drop-badge">${dropLabel}</div>` : ''}
       <div class="card-img">
         ${item.image ? `<img src="${item.image}">` : `<div style="height:100%; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:0.8rem;">Image vide</div>`}
-        <div class="card-overlay ${isUnlocked ? '' : 'admin-only'}">
+        <div class="card-overlay">
           <div style="display:flex; gap:8px;">
             <button class="ov-btn" onclick="openP(${item.id})">✎</button>
             <button class="ov-btn ${item.ongoing ? 'active-ongoing' : ''}" onclick="toggleOngoing(${item.id})" title="En cours">🔖</button>
@@ -346,8 +348,8 @@ function render() {
             <button class="ov-btn ${item.rank===1?'active-medal':''}" onclick="setMedal(${item.id}, 1)">🥇</button>
             <button class="ov-btn ${item.rank===2?'active-medal':''}" onclick="setMedal(${item.id}, 2)">🥈</button>
             <button class="ov-btn ${item.rank===3?'active-medal':''}" onclick="setMedal(${item.id}, 3)">🥉</button>
-            <button class="ov-btn ${item.rank===4?'active-medal':''}" onclick="setMedal(${item.id}, 4)">🏅</button>
-            <button class="ov-btn ${item.rank===5?'active-medal':''}" onclick="setMedal(${item.id}, 5)">💎</button>
+            <button class="ov-btn ${item.rank===4?'active-medal':''}" onclick="setMedal(${item.id}, 4)">4🏅</button>
+            <button class="ov-btn ${item.rank===5?'active-medal':''}" onclick="setMedal(${item.id}, 5)">5💎</button>
           </div>
         </div>
       </div>
@@ -360,8 +362,8 @@ function render() {
   });
 }
 
-function del(id) { if(isUnlocked && confirm("Supprimer ?")) { lib = lib.filter(i => i.id !== id); save(); render(); } }
-function openP(id) { if(isUnlocked) { photoTarget = id; document.getElementById('photoModal').classList.add('open'); } }
+function del(id) { if(confirm("Supprimer ?")) { lib = lib.filter(i => i.id !== id); save(); render(); } }
+function openP(id) { photoTarget = id; document.getElementById('photoModal').classList.add('open'); }
 function closeM(id) { document.getElementById(id).classList.remove('open'); }
 
 function exportData() {
@@ -385,12 +387,12 @@ document.getElementById('fileInput').onchange = e => {
 };
 
 document.getElementById('confirmPhoto').onclick = () => {
-  const itm = lib.find(i => i.image === photoTarget || i.id === photoTarget);
+  const itm = lib.find(i => i.id === photoTarget);
   if(itm) { itm.image = pendingFile || document.getElementById('photoUrl').value.trim(); save(); render(); }
   closeM('photoModal'); pendingFile = null; document.getElementById('photoUrl').value='';
 };
 
-document.getElementById('openAdd').onclick = () => { if(isUnlocked) document.getElementById('addModal').classList.add('open'); };
+document.getElementById('openAdd').onclick = () => { document.getElementById('addModal').classList.add('open'); };
 document.getElementById('search').oninput = render;
 
 load(); render();
